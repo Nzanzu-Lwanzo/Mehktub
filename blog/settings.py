@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import os 
+import dj_database_url 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,7 +80,14 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': dj_database_url.config(
+        default='postgres://nzanzu_lwanzo:1VcBtetKT2KPx7fKWunNGuQZ9UOJOVa2@dpg-co1evb0cmk4c73e9d090-a/mehktub_db',
+        conn_max_age=600
+    )
+}
+
+"""
+{
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mehktub_db',
         'HOST':'127.0.0.1',
@@ -91,7 +99,7 @@ DATABASES = {
             'collation':'utf8mb4_unicode_ci'
         }    
     }
-}
+"""
 
 
 # Password validation
