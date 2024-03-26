@@ -1,0 +1,54 @@
+{% extends 'administration/admin-panel.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    ADMIN|HASHTAGS
+{% endblock %}
+
+{% block content %}
+<div class="dash-hashtags-section" id="dash-hashtags-section">
+    <div class="dash-top-section">
+        <h2 class="dash-end-section">Hashtags</h2>
+
+        <ul>
+            <span class="dash-section-top-btn dash-counter">
+                <li>
+                    {{ numberOfRessource }}
+                </li>
+            </span>
+            
+            <!-- FILTRAGE -->
+            <a href="#" class="dash-section-top-btn">
+                <li>
+                    MostUsed
+                </li>
+            </a>
+            <a href="#" class="dash-section-top-btn">
+                <li>
+                    LessUsed
+                </li>
+            </a>
+        </ul>
+    </div>
+
+    <ul class="dash-list-hashtags">
+        {% for element in allData %}
+            <a href="{% url 'post:search-by-hashtag' element.id element.hashtag %}">
+                <li>
+                    <span>
+                        #{{ element.hashtag }}
+                    </span>
+                    
+                    {% with element.articleHashtags.count as numHash %}
+                    <span>
+                        {{ numHash }} article{{numHash|pluralize}}
+                    </span>
+                    {% endwith %}
+                </li>
+            </a>
+        {% endfor %}
+    </ul>
+
+    {% include 'paginator.html' %}
+</div>
+{% endblock content %}

@@ -1,0 +1,75 @@
+{% extends 'administration/admin-panel.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    SPACE|{{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+    <div class="dash-three-last" id="dash-articles-section">
+        <h2 class="dash-end-section">Articles</h2>
+        <div class="dash-wrap-content">
+            {% csrf_token %}
+        {% for article in articles %}
+            <div class="dash-card dash-card-for-editor-filtering-purpose" id="article-{{article.id}}">
+                <div class="dash-img">
+                    <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+
+                    <div class="dash-wrap-link">
+                        <a href="{{ article.get_absolute_url }}" class="dash-link">
+                            {{ article.title }}
+                        </a>
+                    </div>
+
+                    {% if article.online %}
+                        <a href="{% url 'post:put-article-outline' article.slug article.id %}" class="dash-status-btn gen-outline">
+                            <span class="fa-solid fa-wifi dash-status dash-status-for-editor-space"></span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'post:put-article-online' article.slug article.id %}" class="dash-status-btn gen-online">
+                            <span class="fa-solid fa-wifi dash-status dash-status-for-editor-space"></span>
+                        </a>
+                    {% endif %}
+
+                    <div class="dash-ed-del">
+                        <a href="{% url 'site-admin:update-article' article.slug article.id %}" class="fa-solid fa-edit dash-edit-article dash-icb"></a>
+                        <a href="{{ article.deleteArticle }}" class="fa-solid fa-trash dash-delete-article dash-icb" data-articleId="article-{{article.id}}"></a>
+                    </div>
+                </div>
+                
+
+                <div class="dash-info">
+                    <div class="dash-placeholder"></div>
+                    <div class="dash-data">
+                        
+                        
+
+                        <div class="dash-u">
+                            <span class="d-i">
+                                <a style="color:inherit;" href="{% url 'site-admin:same-date-articles' article.id %}">
+                                    {{ article.saveDate.date }}
+                                </a>
+                            </span>
+                        </div>
+                        <span class="d-i d-c">
+                            <a style="color:inherit;"  href="{% url 'site-admin:same-article-comments' article.id %}">
+                                {{ article.articleComments.count }} commentaire{{ article.articleComments.count|pluralize }}
+                            </a>
+                        </span>
+                        <span class="d-i d-c">
+                            {{ article.likes.count }} likes
+                        </span> 
+                        <span class="d-i d-c d-last">
+                            {{ article.updateDate|formatDate }}
+                        </span>  
+                        <span class="d-i d-c">
+                            {{ article.category.title }}
+                        </span>      
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% include 'paginator.html' %}
+    </div>
+{% endblock content %}

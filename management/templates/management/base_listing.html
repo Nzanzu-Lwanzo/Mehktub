@@ -1,0 +1,272 @@
+{% load static %}
+{% load custom-filters %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Tous les articles de la catégorie {{ category.title }}">
+    <meta name="keywords" content="{{ category.title}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>
+        {% block pageTitle %}
+            Articles|{{ category.title }}
+        {% endblock %}
+    </title>
+
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+    
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'management/css/base_listing.css' %}">
+    <!-- Custom importmap -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js files -->
+    <script type="module" src="{% static 'management/js/base_listing.js' %}" defer></script>
+</head>
+<body>
+    <div class="bl-site-pusher">
+        <!-- POUR ASSOMBRIR LA PAGE QUAND LE MENU APPARAIT -->
+        <div class="bl-blurer"></div>
+    <div class="bl-big-head">      
+        <header class="bl-topbar">
+            <span class="bl-site-name">Mehktub</span>
+
+            <nav class="bl-menu">
+                <ul>
+                    <div class="bl-links">
+                        <li><a href="{% url 'extra:homepage'  %}">Accueil</a></li>
+                        <li class="bl-rubriques-link"><a href="#rubriques">Rubriques</a></li>
+                        {% if not user|isEditor %}
+                            <li><a href="#">Contribuer</a></li>
+                        {% endif %}
+                        
+                        {% if user|isEditor and not user.is_superuser %}
+                            <a href="{% url 'site-admin:editor-space' %}" class="bl-add-link">
+                                <span class="fa-solid fa-dashboard"></span>
+                            </a>
+                        {% endif %}
+
+                        {% if user|isEditor %}
+                            <li><a href="{% url 'site-admin:create-article' %}" class="bl-add-link">Rédiger</a></li>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="bl-icons">
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <li><a href="{% url 'site-admin:dashboard' %}" class="bl-add-link">Admin</a></li>
+                        {% endif %}
+
+                        <li class="bl-search-icon bl-icon">
+                            <span class="fa-solid fa-search bl-loupe"></span>
+                        </li>
+                        <li class="bl-menu-icon bl-icon">
+                            <span class="fa-solid fa-bars bl-menu-hamburger"></span>
+                        </li>
+                    </div>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="bl-centred">
+            <p class="bl-big-title">
+                {% block bigTitle %}
+                    {{ category.title }}
+                {% endblock %}
+            </p>
+            <div class="bl-stats">
+                <span class="bl-articles"> 
+                   {% if numberOfArticles  %}
+                        <span class="bl-num">{{numberOfArticles}}</span> 
+                        <span>article{{numberOfArticles|pluralize}}</span>
+                    {% endif %}
+                </span>
+                <span class="bl-hashtags">
+                    {% if numberOfHashtags %}
+                        <span class="bl-num">{{numberOfHashtags}}</span>
+                        <span>hashtag{{numberOfHashtags|pluralize}} </span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <span class="bl-arrow-down">
+            <span class="fa-solid fa-arrow-down"></span>
+        </span>
+        
+        <span class="bl-say-what-it-is">
+            {% block whatContent %}
+                Banque d'articles
+            {% endblock %}
+        </span>
+    </div>
+
+    <section class="bl-content">
+
+        <div class="bl-cards">
+
+            {% for article in articles %}
+                <div class="bl-card" id="deletable-{{article.id}}">
+                    <div class="bl-img">
+                        <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+                        <span class="gen-hashtags">
+                            {% for hashtag in article.hashtags.all %}
+                                <span class="gen-hashtag">#{{ hashtag }}</span>
+                            {% endfor %}
+                        </span>
+
+                        {% if user.is_authenticated and user|isEditor %}
+                            <span class="fa-solid fa-copy gen-copy-link" data-articleLink="{{ article.get_absolute_url }}">
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="bl-card-content">
+                        <h2>{{ article.title }}</h2>
+                        <p>
+                           {{ article.sumItUp }}
+                        </p>
+                        <span class="bl-date">
+                            {{ article.updateDate|timesince:now }}
+                        </span>
+                        <span class="bl-author-p">
+                            Auteur : 
+                            <a href="{% url 'site-admin:same-author-articles' article.author.id %}" class="bl-author">
+                                {% if article.author %}
+                                    {{ article.author.username|formatUserName }}
+                                {% else %}
+                                    Compte supprimé
+                                {% endif %}
+                            </a>
+                        </span>
+                        <div class="bl-links">
+                            {% if request.user.is_authenticated %}
+                                <a href="{{ article.get_absolute_url }}" class="bl-read">Lire</a>
+                            {% else %}
+                                <a href="{% url 'management:logUserIn' %}" class="bl-read">Lire</a>
+                            {% endif %}
+
+                            {% if user.is_authenticated %}
+                                <form action="" method="DELETE" id="bl-management-actions">
+                                    {% csrf_token %}
+                                    {% if user|canEdit:article %}
+
+                                        <a href="{% url 'site-admin:update-article' article.slug article.id %}" class="bl-modify bl-btn">
+                                            <span class="fa-solid fa-edit"></span>
+                                        </a>
+                                        {% if article.online %}
+                                            <a href="{% url 'post:put-article-outline' article.slug article.id %}" class="bl-modify bl-btn gen-online bl-toggle-io" data-article="{{ article.title }}" data-id="online-{{article.id}}">
+                                                <span class="fa-solid fa-wifi"></span>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'post:put-article-online' article.slug article.id %}" class="bl-modify bl-btn gen-outline bl-toggle-io" data-article="{{ article.title }}" data-id="online-{{article.id}}">
+                                                <span class="fa-solid fa-wifi"></span>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if user.is_superuser %}
+                                        <a href="{{ article.deleteArticle }}" class="bl-delete bl-btn" data-article="{{ article.title }}" data-id="deletable-{{article.id}}">
+                                            <span class="fa-solid fa-trash"></span>
+                                        </a>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="bl-pagination">
+            <ul>
+                {% if articles.has_previous %}
+                    <a href="?cp={{articles.previous_page_number}}">
+                        <li>
+                            <span class="fa-solid fa-arrow-left"></span>
+                        </li>
+                    </a>
+                {% endif %}
+
+                    {% for p in totalPages %}
+                        <a href="?cp={{p}}">
+                            <!-- Si la page actuelle correspond à un nombre -->
+                            <!-- ce nombre sera mis en valeur -->
+                            <!-- class="bl-current-pagination" -->
+                            <li>
+                                {{p}}
+                            </li>
+                        </a>
+                    {% endfor %}
+                   
+                {% if articles.has_next %}
+                    <a href="?cp={{articles.next_page_number}}">
+                        <li>
+                            <span  class="fa-solid fa-arrow-right"></span>
+                        </li>
+                    </a>
+                {% endif %}
+            </ul>
+            <span class="bl-pagonation-locate">{{ articles.number}} / {{ articles.paginator.num_pages }}</span>
+        </div>
+    </section>
+
+
+    <!-- INCLURE LES RESEAUX SOCIAUX -->
+    {% include 'social.html' %}
+    <!-- FIN INCLURE LES RESEAUX SOCIAUX -->
+
+
+    <!-- INCLURE LE FOOTER -->
+    <!-- INCLURE LA CARTE DE CONTACT -->
+    {% include 'about-n-footer.html' %}
+    <!-- FIN INCLURE LE FOOTER -->
+    <!-- FIN INCLURE LA CARTE DE CONTACT -->
+    </div>
+
+    <!-- SEARCH FORM -->
+    <form action="{% url 'post:search-article' %}" method="GET" class="bl-search-form">
+        <div class="bl-wrapper">
+            <input type="search" name="search-input" class="bl-search-input" placeholder="Tapez votre recherche..." autocomplete="off">
+            <button type="submit" class="bl-search-submit">
+                <span class="fa-solid fa-search"></span>
+            </button>
+        </div>
+    </form>
+
+    <!-- MODAL BOX CONFIRM -->
+    <div class="gen-blurer gen-blurer-js">
+        <div class="gen-modal-confirm">
+            <div class="gen-top">
+                <span class="gen-ask">Voulez-vous supprimer l'article</span>
+                <span class="gen-title">
+                    <span id="gen-modal-card-title">
+                        <!-- Tout savoir sur le paradigme de programmation POO et encore plus -->
+                    </span>
+                    <span>
+                        ?
+                    </span>
+                </span>
+                
+            </div>
+            <div class="gen-btns">
+                <button class="gen-yes gen-btn">Oui</button>
+                <button class="gen-no gen-btn">Non</button>
+            </div>
+    
+            <!-- <span class="fa-solid fa-close"></span> -->
+        </div>
+    </div>
+    <!-- END MODAL BOX CONFIRM -->
+
+    <!-- MODAL CARD MESSAGE -->
+    {% include 'modal.html' %}
+    <!-- END MODAL CARD MESSAGE -->
+    
+    <a href="#" class="gen-back-to-top">
+        <span class="fa-solid fa-angle-up"></span>
+    </a>
+</body>
+</html>

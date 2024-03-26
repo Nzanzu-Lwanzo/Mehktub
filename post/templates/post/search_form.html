@@ -1,0 +1,9 @@
+<form action="{% url 'post:search-article' %}" method="GET" id="search-form" class="search-form">
+    {% csrf_token %}
+    <div class="far-wrap da-wrap ap-wrapper">
+        <input type="search" id="search-field" class="search-field" name="search-input" autocomplete="off" placeholder="Tapez votre recherche...">
+        <button type="submit">
+            <span class="fa-solid fa-search"></span>
+        </button>
+    </div>
+</form>

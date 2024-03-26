@@ -1,0 +1,460 @@
+{% load static %}
+{% load custom-filters %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Administration page of Mehktub blogsite">
+    <meta name="keywords" content="Administration,mehktub,delete,update,create,read,fetch">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block pageTitle %}
+            ADMIN|PANEL
+        {% endblock %}
+    </title>
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'administration/css/admin-panel.css' %}">
+    <!-- Custom icons -->
+    {% include 'icons.html' %}
+    <!-- Importmaps for reusable functions -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom Js script -->
+    <script src="{% static 'administration/js/admin-panel.js' %}" type="module" defer></script>
+</head>
+<body>
+    <main>
+        <div class="dash-sidebar">
+            <div class="dash-sidebar-top">
+                {% if lastArticle %}
+                <div class="dash-img-infos">
+                    <img src="{{ lastArticle.image.url }}" alt="{{ lastArticle.imageAlt }}">
+                    <div class="dash-last-article">
+                        <span class="dash-info">
+                            <span class="dash-icon fa-solid fa-comment"></span>
+                            <span class="dash-num">{{ lastArticle.articleComments.count }}</span>
+                        </span>
+                        <span class="dash-info">
+                            <span class="dash-icon fa-solid fa-calendar"></span>
+                            <span class="dash-num">{{ lastArticle.saveDate|timesince:now}}</span>
+                        </span>
+                    </div>
+                </div>
+               
+                <div class="dash-article-title">
+                    <a class="dash-text" href="{{lastArticle.get_absolute_url }}">
+                        {{ lastArticle.title }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="dash-sidebar-remain">
+                <ul>
+
+                    {% if user.is_superuser %}
+                        <li>
+                            <a href="{% url 'site-admin:dashboard-articles' %}">
+                                <span class="fa-solid fa-upload"></span>
+                                <span>Articles</span>
+                            </a>
+                        </li>
+                    {% else %}
+
+                    {% endif %}
+                    
+
+                    {% if user.is_superuser %}
+                        <li>
+                            <a href="{% url 'site-admin:dashboard-users' %}">
+                                <span class="fa-solid fa-users"></span>
+                                <span>Utilisateurs</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'site-admin:dashboard-comments' %}">
+                                <span class="fa-solid fa-comments"></span>
+                                <span>Commentaires</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'site-admin:dashboard-hashtags' %}">
+                                <span class="fa-solid fa-tags"></span>
+                                <span>Hashtags</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'site-admin:dashboard' %}#dash-categories-section">
+                                <span class="fa-solid fa-list"></span>
+                                <span>Catégories</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'site-admin:dashboard' %}#dash-opinions-section">
+                                <span class="fa-solid fa-quote-left"></span>
+                                <span>Avis</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if user|isEditor and not user.is_superuser %}
+                        <li>
+                            <span data-href="{% url 'site-admin:get-all-outline' %}" class="dash-draft-show dash-btn-js" data-status="0">
+                                <span class="fa-solid fa-archive"></span>
+                                <span>Brouillon</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span data-href="{% url 'site-admin:get-all-online' %}" class="dash-draft-show dash-btn-js" data-status="1">
+                                <span class="fa-solid fa-check"></span>
+                                <span>Postés</span>
+                            </span>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-solid fa-times"></span>
+                                <span>Retirés</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {% if user.is_superuser %}
+                <div class="dash-messages-icon">
+                    <span class="fa-solid fa-messages"></span>
+                    <span class="dash-non-read-messages"></span>
+                </div>
+            {% endif %}
+        </div>
+    
+        <div class="dash-main">
+            <header class="dash-main-header">
+                <a class="dash-page-title" href="#top">
+                    <!-- Administration -->
+                </a>
+
+                <ul>
+                    
+                        <span class="dash-round-btn dash-user dash-hide-on-mobile">
+                            {{ request.user.username|formatUserName }}
+                            <span class="dash-circle"></span>
+                        </span>
+
+                    {% if request.user.is_superuser%} 
+                        <a href="{% url 'site-admin:dashboard' %}" class="dash-round-btn dash-hide-on-mobile" >
+                            Dashboard
+                        </a>
+                    {% endif %}
+
+                        <a href="{% url 'site-admin:create-article' %}" class="dash-round-btn dash-hide-on-mobile">
+                            Rédiger un article
+                        </a>
+
+                        {% if user.is_superuser %}
+                            {% if verdict %}
+                                <a href="{% url 'site-admin:dashboard-messages' %}" class="dash-circle-btn dash-hide-on-computer dash-message dash-green">
+                                    <span class="fa-solid fa-message"></span>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'site-admin:dashboard-messages' %}" class="dash-circle-btn dash-hide-on-computer dash-message">
+                                    <span class="fa-solid fa-message"></span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                        
+                    {% if user.is_superuser %}
+                        <a href="{% url 'site-admin:dashboard' %}" class="dash-circle-btn dash-hide-on-computer">
+                            <span class="fa-solid fa-dashboard"></span>
+                        </a>
+                    {% endif %}
+                        <a href="{% url 'extra:homepage' %}" class="dash-circle-btn">
+                            <span class="fa-solid fa-home"></span>
+                        </a>
+                        <a href="{% url 'site-admin:create-article' %}" class="dash-circle-btn dash-hide-on-computer">
+                            <span class="fa-solid fa-plus"></span>
+                        </a>
+                    <span class="fa-solid fa-align-left dash-circle-btn dash-menu-hamburger"></span>
+                </ul>
+            </header>
+
+            <section class="dash-page-content">
+            {% block content %}
+                <div class="dash-three-last" id="dash-articles-section">
+                    <h2 class="dash-end-section">Articles les plus likés</h2>
+                    <div class="dash-wrap-content">
+                        {% for article in mostRead %}
+                        <div class="dash-card">
+                            
+                            <div class="dash-img">
+                                <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+
+                                <div class="dash-wrap-link">
+                                    <a href="{{ article.get_absolute_url }}" class="dash-link">
+                                        {{ article.title }}
+                                    </a>
+                                </div>
+
+                                {% if article.online %}
+                                    <a href="{% url 'post:put-article-outline' article.slug article.id %}" class="dash-status-btn gen-outline dash-status-for-editor-space">
+                                        <span class="fa-solid fa-wifi dash-status dash-status-for-editor-space"></span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'post:put-article-online' article.slug article.id %}" class="dash-status-btn gen-online">
+                                        <span class="fa-solid fa-wifi dash-status dash-status-for-editor-space"></span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            
+        
+                            <div class="dash-info">
+                                <div class="dash-placeholder"></div>
+                                <div class="dash-data">
+                                  
+                                    <div class="dash-u">
+                                        <span class="d-i">
+                                            <a style="color:inherit;" href="{% url 'site-admin:same-author-articles' article.author.id %}">
+                                                {{ article.author.username|truncatechars:13 }}
+                                            </a>
+                                        </span>
+                                        <span class="d-i">
+                                            <a style="color:inherit;" href="{% url 'site-admin:same-date-articles' article.id %}">
+                                                {{ article.saveDate.date }}
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <span class="d-i d-c">
+                                        <a style="color:inherit;"  href="{% url 'site-admin:same-article-comments' article.id %}">
+                                            {{ article.articleComments.count }} commentaire{{ article.articleComments.count|pluralize }}
+                                        </a>
+                                    </span>
+                                    <span class="d-i d-c">
+                                        {{ article.likes.count }} likes
+                                    </span> 
+                                    <span class="d-i d-c d-last">
+                                        {{ article.updateDate|formatDate }}
+                                    </span>       
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            {% if user.is_superuser %}
+            <div class="dash-comments-section" id="dash-comments-section">
+                <div class="dash-top-section">
+                    <h2 class="dash-end-section">Commentaires</h2>
+
+                    <ul>
+                        <span class="dash-section-top-btn dash-counter">
+                            <li id="dash-count-comments">
+                                {{ someComments.count }}
+                            </li>
+                        </span>
+                    
+                    </ul>
+                </div>
+
+                <div class="dash-comment-cards">
+                    {% csrf_token %}
+                    {% for comment in someComments %}
+                    <div class="dash-comment-card" id="comment-{{ comment.id }}">
+                        <form class="dash-icons" method="DELETE">
+                            <a href="{{ comment.delete_comment }}" class="fa-solid fa-trash dash-delete" data-forDeleting="comment-{{ comment.id }}"></a>
+                        </form>
+                        <div class="dash-text">
+                            <p>
+                                {{comment.content}}
+                            </p>
+                            
+                            <span class="dash-commentor">{{ comment.whoPost|formatUserName }}</span>
+                            <span class="dash-date">{{ comment.postDate|formatDate }}</span>
+                            <span>
+                                <a href="{{ comment.whichArticle.get_absolute_url }}">{{ comment.whichArticle.title }}</a>
+                            </span>
+                        </div>          
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="dash-categories-section" id="dash-categories-section">
+                <div class="dash-top-section">
+                    <h2 class="dash-end-section">Catégories</h2>
+
+                    <ul>
+                        <span class="dash-section-top-btn dash-counter">
+                            <li id="dash-count-categories">
+                                {{ allCategories.count }}
+                            </li>
+                        </span>
+                        
+                        <!-- FILTRAGE -->
+                        <a href="{% url 'site-admin:create-category' %}" class="dash-section-top-btn">
+                            <li>
+                                Create
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="dash-categories-cards">
+                    {% for category in allCategories %}
+                        <div class="dash-category-card" id="card-category-{{category.id}}">
+                            <div class="dash-img">
+                                <img src="{{ category.image.url }}" alt="{{ category.imageAlt }}">
+                                <div class="dash-blur">
+                                    <div>
+                                        <p>
+                                            {{ category.title }}
+                                        </p>
+                                        {% with category.categoryArticles.count as artNum %}
+                                        <span class="dash-count">
+                                            {{ artNum }} article{{artNum|pluralize}}
+                                        </span>
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dash-content">
+                                <p>
+                                    {{ category.description }}
+                                </p>
+                                
+                                <div class="dash-icons">
+                                   <a href="{% url 'site-admin:update-category' category.id %}" class="fa-solid fa-edit dash-icon"></a>
+                                   <a href="{% url 'site-admin:delete-category' category.id %}" class="fa-solid fa-trash dash-icon dash-delete dash-delete-category" data-id="category-{{category.id}}"></a>
+                                   <a href="{{ category.get_absolute_url }}" id="dash-list-articles">
+                                    ListAllArticles
+                                </a>
+                                </div>
+                            </div>
+
+                            <div class="dash-ask-before-delete" id="category-{{category.id}}">
+                                <div class="dash-center">
+                                    <div class="dash-infos">
+                                        <p>Supprimer une catégorie supprimera tous les articles liés</p>
+                                        <p>Etes-vous sûr de le faire ?</p>
+                                    </div>
+                                    <div class="dash-btns">
+                                        <button type="button" dat-verdict="false" class="false">Dismiss</button>
+                                        <button type="button" dat-verdict="true" class="true">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="dash-opinions-section" id="dash-opinions-section">
+                <div class="dash-top-section">
+                    <h2 class="dash-end-section">Avis Utilisateurs</h2>
+
+                    <ul>
+                        <span class="dash-section-top-btn dash-counter">
+                            <li id="dash-count-opinions">
+                                {{ publicOpinions.count }}
+                            </li>
+                        </span>
+                        
+                        <!-- FILTRAGE -->
+                        <a href="{% url 'site-admin:create-opinion' %}" class="dash-section-top-btn">
+                            <li>
+                                Create
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+
+                
+                <ul class="dash-list-opinions">
+                    {% csrf_token %}
+                    {% for opinion in publicOpinions %}
+                        <li id="opinion-{{opinion.id}}">
+                            <div class="dash-left">
+                                <p class="dash-text">
+                                    {{ opinion.content}}
+                                </p>
+                                <p>
+                                    Avis de <span class="dash-whoSaid">{{ opinion.whoSaid }}</span>
+                                </p>
+                            </div>
+                           <div class="dash-right">
+                                <a href="{% url 'site-admin:delete-opinion' opinion.id %}" class="fa-solid fa-trash dash-delete delete-opinion" data-id="opinion-{{opinion.id}}"></a>
+                                <a href="{% url 'site-admin:update-opinion' opinion.id %}" class="fa-solid fa-edit"></a>
+
+                                {% if opinion.postIt %}
+                                    <div class="dash-check dash-check-js"  id="checker-{{opinion.id}}">
+                                        <span class="dash-circle"></span>
+                                        <input type="checkbox" class="checker checker-for-request" data-id="checker-{{opinion.id}}" data-toUpdate="{% url 'site-admin:post-not-opinion' opinion.id %}" checked>
+                                    </div>
+                                {% else %}
+                                    <div class="dash-check"  id="checker-{{opinion.id}}">
+                                        <span class="dash-circle"></span>
+                                        <input type="checkbox" class="checker checker-for-request" data-id="checker-{{opinion.id}}" data-toUpdate="{% url 'site-admin:post-opinion' opinion.id %}">
+                                    </div>
+                                {%endif %}
+                           </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% endblock content %}
+            </section>
+        </div>
+
+        <!-- FIXED ELEMENTS -->
+        {% if user.is_superuser %}
+            <a href="{% url 'site-admin:dashboard-messages' %}" id="dash-message-box">
+                <span class="fa-solid fa-message"></span>
+                {% if verdict %}
+                    <span class="dash-circle"></span>
+                {% endif %}
+            </a>
+        {% endif %}
+
+        <div class="dash-draft">
+            <div class="dash-contains-cards">
+             <form action="{% url 'site-admin:get-all-outline' %}" method="GET" class="dash-form">
+                 <div class="dash-wrap">
+                     <input type="search" name="search-input" id="search-input" placeholder="Cherchez un article ...">
+                     <button type="submit">
+                         <span class="fa-solid fa-search"></span>
+                     </button>
+                 </div>
+     
+                 <span class="fa-solid fa-wifi gen-status"></span>
+             </form>
+             <div class="dash-results-cards">
+     
+     
+                 
+             </div>
+             <div class="gen-waiter gen-waiter-js">
+                 <p>
+                     Veuillez patienter ...
+                 </p>
+             </div>
+     
+     
+     
+            </div>
+            <span class="fa-solid fa-close dash-close-draft"></span>
+        </div>
+
+        
+    </main>
+       
+    {% include 'modal.html' %}
+
+</body>
+</html>

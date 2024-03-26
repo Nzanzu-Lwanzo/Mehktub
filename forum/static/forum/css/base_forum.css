@@ -1,0 +1,247 @@
+::-moz-selection {
+  color: black;
+  background-color: rgba(253, 208, 23, 0.5);
+}
+
+::selection {
+  color: black;
+  background-color: rgba(253, 208, 23, 0.5);
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.bfr-btn-link {
+  display: inline-block;
+  background-color: #FDD017;
+  color: #090A0C;
+  padding: 10px 25px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  min-height: 100vh;
+}
+
+.bfr-topbar {
+  height: 80px;
+  background-color: #090A0C;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0;
+  flex-wrap: nowrap;
+  padding: 40px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+.bfr-topbar .bfr-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+.bfr-topbar .bfr-left #filter_value,
+.bfr-topbar .bfr-left .bfr-topbar-icon {
+  border: 2px solid #FDD017;
+  padding: 0.2em 0.7em;
+  height: 48px;
+}
+.bfr-topbar .bfr-left .bfr-topbar-icon {
+  border-radius: 50%;
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.bfr-topbar .bfr-left .bfr-profileBox {
+  border-color: #00FF00 !important;
+}
+.bfr-topbar .bfr-left #filter_value {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  width: 132px;
+  border-radius: 25px;
+  position: relative;
+}
+.bfr-topbar .bfr-left #filter_value .bfr-default {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  flex-wrap: nowrap;
+  font-size: 1.1rem;
+}
+.bfr-topbar .bfr-left #filter_value .bfr-default .bfr-down {
+  transform: translateY(1px);
+}
+.bfr-topbar .bfr-left #filter_value .bfr-options {
+  position: absolute;
+  background-color: #090A0C;
+  top: 62px;
+  left: -25px;
+  width: 200px;
+  display: none;
+  overflow: hidden;
+  color: white;
+}
+.bfr-topbar .bfr-left #filter_value .bfr-options li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.bfr-topbar .bfr-left #filter_value .bfr-options li:hover, .bfr-topbar .bfr-left #filter_value .bfr-options li:focus {
+  background-color: #FDD017;
+  color: black;
+}
+.bfr-topbar .bfr-left #filter_value .bfr-options-js {
+  display: block;
+}
+.bfr-topbar .bfr-site-name {
+  font-size: 3rem;
+}
+.bfr-topbar .bfr-topbar-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  flex-wrap: nowrap;
+  transition: 0.4s;
+  cursor: pointer;
+}
+.bfr-topbar .bfr-topbar-icon:hover, .bfr-topbar .bfr-topbar-icon:focus {
+  background-color: #FDD017;
+  color: #090A0C;
+  border-color: #090A0C;
+}
+
+.bfr-profile {
+  background-color: #FDD017;
+  padding: 10px 3rem;
+  padding-top: 50px;
+  color: black;
+  position: fixed;
+  z-index: 3;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30vw;
+  transform: translateX(-100%);
+  transition: 0.5s ease-out;
+}
+.bfr-profile .bfr-img {
+  position: relative;
+}
+.bfr-profile .bfr-img img {
+  border-radius: 5px;
+}
+.bfr-profile .bfr-img .bfr-changeImage {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  bottom: -15px;
+  right: 20px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.bfr-profile .bfr-img .bfr-changeImage:hover {
+  transform: rotate(360deg);
+}
+.bfr-profile .bfr-img .fileChooser {
+  display: none;
+}
+.bfr-profile .bfr-identity {
+  padding: 10px;
+  margin-top: 20px;
+  border-top: 0.5px solid #090A0C;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.bfr-profile .bfr-identity .bfr-name,
+.bfr-profile .bfr-identity .bfr-email,
+.bfr-profile .bfr-identity .bfr-statut,
+.bfr-profile .bfr-identity .bfr-stat {
+  font-size: 1.2rem;
+}
+.bfr-profile .bfr-identity .bfr-important {
+  font-weight: bold;
+}
+
+.bfr-profile-js {
+  transform: translate(0);
+}
+
+.bfr-content {
+  min-height: 100vh;
+  margin-top: 80px;
+}
+
+@media only all and (max-width: 1150px) {
+  .bfr-profile {
+    width: 40vw;
+  }
+}
+@media only all and (max-width: 800px) {
+  .bfr-profile {
+    width: 60vw;
+  }
+}
+@media only all and (max-width: 633px) {
+  .bfr-topbar .bfr-topbar {
+    justify-content: space-between;
+  }
+  .bfr-topbar .bfr-site-name {
+    display: none;
+  }
+}
+@media only all and (max-width: 425px) {
+  .bfr-profile {
+    width: 100vw;
+    top: 80px;
+  }
+}/*# sourceMappingURL=base_forum.css.map */

@@ -1,0 +1,585 @@
+// LES VARIABLES
+$bgw : #F7FAFB;
+$bgb : #090A0C;
+$fg: black;
+$bgb_2:#333;
+$accent:#FDD017;
+$success: #00FF00;
+$title:Title;
+$text:Text;
+$font:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$radius:5px;
+$topbar_height:60px;
+$padding_box:10px 3rem;
+$padding_cards:30px 3rem;
+$sidebar:50vw;
+$sdb_show_duration:.4s;
+
+
+// LES MIXINS
+@mixin flex_row(
+    $alit:center,
+    $jusco:space-between,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: row;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin flex_column(
+    $alit:center,
+    $jusco:center,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: column;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin grid_col(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-columns: $div;
+    gap: $gap;
+}
+
+// LE STYLE GENERAL
+
+::-moz-selection {
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+::selection{
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: $title, $font;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+.gen-hashtags{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 0;
+    width: 100%;
+}
+.gen-hashtag{
+    display: inline-block;
+    padding: .1rem .3rem;
+    /* border: 1px solid white; */
+    border-radius: 5px;
+    color: $accent;
+    background-color: $bgb;
+    // backdrop-filter: blur(1px);
+}
+
+* {
+    border: none;outline: none;box-sizing: border-box;
+    margin: 0;padding: 0;text-decoration: none;
+    // transition: .4s;
+}
+
+
+html{
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $text,$font;
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+
+ul{
+    list-style-type: none;
+    padding-left: none;
+}
+
+.far-header{
+    padding: $padding_box;
+    @include flex_row;
+    position: sticky;
+    z-index: 10;
+    left: 0;right:0;top:0;
+    background-color: $bgb;
+    color: white;
+
+
+    .far-page-title{
+        font-size: 2rem;
+    }
+
+    .far-icons{
+        @include flex_row($jusco:flex-end,$gap:20px);
+
+        .far-icon{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background-color: $accent;
+            color: $bgb;
+            @include flex_column;
+            font-size: 1.1rem;
+
+        }
+    }
+
+}
+
+
+
+.far-cards {
+    
+    padding: $padding_cards;
+    @include grid_col($div:repeat(4,1fr),$gap:20px);
+    align-items: start;
+    min-height: 100vh;
+    background-color: white;
+
+    .far-card{
+        background-color: $bgb;
+        color: white;
+        border-radius: $radius;
+        overflow: hidden;
+        transition: .4s ease-out;
+
+        .far-img{
+            position: relative;
+
+            .gen-copy-link{
+                position: absolute;
+                right: 1rem;
+                top: 15px;
+                background-color: $accent;
+                color: black;
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                @include flex_column;
+                transition: .4s ease-out;
+                cursor: copy;
+
+                &:hover,
+                &:active{
+                    background-color: darken($color: $accent, $amount: 10);
+                }
+            }
+
+            .far-category{
+                display: inline-block;
+                background-color: rgba(0,0,0,.8);
+                color: $accent;
+                @include flex_row($jusco:flex-start,$gap:20px);
+                padding: 5px 10px;
+                position: absolute;
+                width: 100%;
+            }
+        }
+
+        .far-card-content{
+            @include flex_column($alit:flex-start,$jusco:flex-start,$gap:10px);
+            padding: 20px;
+
+            h2{
+                color: $accent;
+                font-size: 1.2rem;
+                word-wrap: break-word;
+                font-family: $text,$font;
+            }
+
+            p{
+                word-wrap: break-word;
+                display: -webkit-box;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .far-date{
+                color: $accent;
+            }
+
+            .far-author{
+                color: $accent;
+            }
+
+            .far-links{
+                @include flex_row;
+                width: 100%;
+            }
+
+            .far-link-in-card{
+                color: $accent;
+            }
+
+            .far-read{
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: $accent;
+                color: black;
+                border-radius: 7px;
+            }
+
+            .far-modify,
+            .far-delete{
+                @include flex_column;
+                height: 45px;
+                width: 45px;
+                border-radius: 50%;
+                background-color: $bgw;
+                color: $bgb;
+                font-size: 1.1rem;
+                transition: .4s ease-in;
+            }
+
+            .far-delete{
+                color: red;
+            }
+
+            .gen-online{
+                color: $success;
+                background-color: $bgb_2;
+            }
+
+            .gen-outline{
+                color: red;
+            }
+
+            #far-management-actions{
+                @include flex_row($jusco:flex-end,$gap:15px);
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+.fr-noresult{
+    font-size: 2rem;
+    margin-top: 30px;
+    text-align: center;
+    grid-column: span 4;
+    @include flex_column($gap:20px);
+}
+
+.gen-click-here{
+    padding: 10px 25px;
+    font-family: $text,$font;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: $accent;
+    color: black;
+    text-align: center;
+    grid-column: span 4;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.search-form {
+    position:fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    width: 100vw;
+    height: 100px;
+
+    @include flex_column;
+    transform: translateY(-100%);
+    transition: .4s;
+
+    .far-wrap {
+        width: 70%;
+        height: 50px;
+        @include flex_row($jusco:flex-start);
+        box-shadow: 1px 1px 11px 2px $bgb;
+
+        input,button{
+            height: 100%;
+            padding: 20px;
+            font-size: 1.1rem;
+            outline: 2px solid transparent;
+            font-family: $text,$font; 
+            @include flex_column;
+        }
+
+        input{
+            width: 100%;
+        }
+
+        button{
+            background-color: $bgb;
+            color: $accent;
+            cursor: pointer;
+        }
+    }
+
+    .search-field::-webkit-search-cancel-button {
+        display: none;
+    }
+
+}
+
+.search-form-js {
+    top: $topbar_height;
+    transform: initial;
+}
+
+.gen-back-to-top {
+    position: fixed;
+    z-index: 10000;
+    bottom: 20px;
+    right: 30px;
+    padding: 15px;
+    border-radius:50%;
+    background-color: $accent;
+    @include flex_column;
+    color: black;
+    opacity: 0;
+    transition: .4s;
+    transform: translateY(10px);
+}
+
+.gen-back-to-top-js {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+
+// MEDIA QUERIES
+
+@media only all and (max-width:1250px){
+    .far-cards{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media only all and (max-width:1015px){
+    .far-cards{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+
+@media only all and (max-width:720px){
+    .far-cards{
+        grid-template-columns: auto;
+    }
+}
+
+@media only all and (max-width:425px){
+        
+    .far-header{
+        padding: 10px 20px;
+        margin-bottom: 20px;
+    }
+
+    .search-form{
+        .far-wrap{
+            width: 90%;
+        }
+    }
+
+}
+
+@media only all and (max-width:360px){
+
+    .far-cards{
+        padding: 20px;
+    }
+
+     
+    .far-header{
+        margin-bottom: 10px;
+    }
+
+    // RENDRE LA CARTE DES MEDIAS SOCIAUX BLANCHE
+    .hm-social-media{
+        background-color: white !important;
+
+        .hm-title{
+            color: black !important;
+        }
+
+        .hm-container span{
+            color: black !important;
+        }
+    }
+}
+
+
+
+// GENERAL - FILTRER PAR HASHTAG
+.gen-search-by-hashtag{
+    position: fixed;
+    z-index:11;
+    left: 0;right: 0;top: 0;bottom: 0;
+    width: 100%;height:100%;
+    background-color: rgba(0,0,0,.9);
+    font-size: 1.2rem;
+    display: none;
+
+    .gen-card{
+        min-height: 200px;
+        width: 30%;
+        margin: auto;
+        @include flex_column($gap:10px);
+        text-align: center;
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+            
+        .gen-closer{
+            // position: absolute;
+            // top: 20px;
+            // right: 20px;
+            display: inline-block;
+            width: 100%;
+            padding: 0 20px;
+            text-align: right;
+            position: relative;
+            margin-bottom: 20px;
+            cursor: pointer;
+
+            .gen-quadra{
+                padding: 5px;
+                background-color: black;
+                color: $accent;
+                @include flex_column;
+                position: absolute;
+                right: 0;
+                top: -8px;
+                height: 2rem;
+                width: 2rem;
+                border-radius: 50px;
+            }
+        }
+
+        .gen-text{
+            line-height: 1.4em;
+        }
+        .gen-keyword{
+            font-size: 1.2em;
+            color: $accent;
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        .gen-search-form{
+            @include flex_column($alit:center,$gap:10px);
+            width: 100%;
+
+            input{
+                border: none;
+                outline: none;
+                padding: 10px;
+                font-family: $text,$font;
+                font-size: 1rem;
+                border-radius: 5px;
+                box-shadow: 1px 1px 11px 1px grey;
+                width: 100%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .gen-submit{
+                padding: 10px 25px;
+                background-color: $accent;
+                color: black;
+                border: none;
+                outline: none;
+                font-family: $text;
+                width: auto;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+.gen-search-by-hashtag-js{
+    @include flex_column;
+}
+
+
+@media only all and (max-width:1220px){
+    .gen-search-by-hashtag .gen-card{
+        width: 40%;
+    }
+}
+
+
+@media only all and (max-width:915px){
+    .gen-search-by-hashtag .gen-card{
+        width: 50%;
+    }
+}
+
+
+@media only all and (max-width:735px){
+    .gen-search-by-hashtag .gen-card{
+        width: 70%;
+    }
+}
+
+@media only all and (max-width:530px){
+    .gen-search-by-hashtag .gen-card{
+        width: 80%;
+    }
+}
+
+
+@media only all and (max-width:425px){
+
+    .far-header{
+        .far-icons {
+            gap: 10px;
+        }
+    }
+
+    .gen-search-by-hashtag .gen-card{
+        width: 90%;
+        justify-content: flex-start;
+        min-height: 100px;
+
+        .gen-closer{
+            margin-bottom: 0;
+        }
+        .gen-text{
+            font-size: 1.1rem;  
+            display: none;
+        }
+
+        .gen-search-form{
+            margin-top: 20px;
+        }
+    }
+}

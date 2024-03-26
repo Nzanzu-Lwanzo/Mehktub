@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="From the database">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>{% block docTitle %}{% endblock docTitle%}</title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'forum/css/base_forum.css' %}">
+    {% block customCSS%}
+    {% endblock customCSS %}
+
+    <!-- Custom importmap -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js scripts -->
+    <script type="module" src="{% static 'forum/js/base_forum.js' %}" defer></script>
+    {% block customJS%}
+    {% endblock customJS%}
+</head>
+<body>
+
+    <!-- Fixed -->
+    <div class="bfr-topbar">
+        <span class=" bfr-site-name">Mehktub</span>
+
+        <div class="bfr-left">
+            {% block moreInTopbar %}
+            {% endblock %}
+            <div class="bfr-profileBox">
+                <span class="fa-solid fa-user bfr-user-icon bfr-topbar-icon"></span>
+            </div>
+
+            <div class="bfr-home">
+                <span class="fa-solid fa-home bfr-home-icon bfr-topbar-icon"></span>
+            </div>
+        </div>
+       
+    </div>
+
+    <!-- Fixed -->
+    <div class="bfr-profile">
+       <div class="bfr-img">
+            <img src="{% static 'imgs/black_on_yellow.jpg' %}" alt="" id="bfr-profile-img">
+            <input type="file" accept="image/*" class="fileChooser">
+            <button class="bfr-changeImage">
+                <span class="fa-solid fa-camera-retro"></span>
+            </button>
+       </div>
+       
+       <div class="bfr-identity">
+            <span class="bfr-name">
+                <span>Nom :</span><span class="bfr-important">John Doe</span>
+            </span>
+            <span class="bfr-important bfr-email">johndoe@gmail.com</span>
+            <span class="bfr-statut">
+                <span>Statut : </span><span class="bfr-important">Modérateur</span>
+            </span>
+            <span class="bfr-stat">
+                <span>Repliques : </span><span class="bfr-important">120</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Not fixed -->
+    <section class="bfr-content">
+        {% block content%}
+        {% endblock %}
+    </section>
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% extends 'administration/admin-panel.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    ADMIN|USERS
+{% endblock %}
+
+{% block content %}
+<div class="dash-users-section" id="dash-users-section">
+    <div class="dash-list-users">
+        <div class="dash-top-section">
+            <h2 class="dash-end-section">Utilisateurs</h2>
+
+            <ul>
+                <span class="dash-section-top-btn dash-counter">
+                    <li>
+                        {{ numberOfRessource }}
+                    </li>
+                </span>
+                
+                <!-- FILTRAGE -->
+                <a href="#" class="dash-section-top-btn">
+                    <li>
+                        Editors
+                    </li>
+                </a>
+
+                <a href="#" class="dash-section-top-btn">
+                    <li>
+                        Disabled
+                    </li>
+                </a>
+            </ul>
+        </div>
+
+        <table id="dash-user-table">
+            {% csrf_token %}
+            <tr>
+                <th class="dash-column-username">Username</th>
+                <th class="dash-column-login">Last LogIn</th>
+                <th class="dash-column-iseditor">isEditor</th>
+                <th class="dash-column-disable">Disable</th>
+                <th class="dash-column-makeeditor">MakeEditor</th>
+            </tr>
+
+            {% for user in allData %}
+                <tr id="row-{{ user.id }}">
+                    <td class="dash-column-username"> {{ user.username }} </td>
+                    <td class="dash-column-login"> {{ user.last_login|formatDate }} </td>
+                    <td class="dash-column-iseditor" id="marker-{{user.id}}">
+                        {% if user|isEditor %}
+                            <span class="fa-solid fa-certificate dash-isEditor"></span>
+                        {% else %}
+                            <span class="fa-solid fa-certificate dash-not-editor"></span>
+                        {% endif %}
+                    </td>
+                    <td class="dash-column-disable">
+                        {% if user.is_active %}
+                            <a class="fa-solid fa-trash dash-disable-enable" href="{% url 'site-admin:desactivate-account' user.id %}" data-id="row-{{ user.id }}"></a>
+                        {% else %}
+                            <a class="fa-solid fa-user-plus dash-success dash-disable-enable" href="{% url 'site-admin:reactivate-account' user.id %}" data-id="row-{{ user.id }}"></a>
+                        {% endif %}
+                    </td>
+                    <td class="dash-toggle dash-column-makeeditor">
+                        {% if user|isEditor %}
+                            <div class="dash-check dash-check-js"  id="checker-{{user.id}}">
+                                <span class="dash-circle"></span>
+                                <input type="checkbox" class="checker checker-for-request" data-id="checker-{{user.id}}" data-linkToEditor="{% url 'site-admin:remove-editor' user.id %}" data-forMarker="marker-{{user.id}}" checked>
+                            </div>
+                        {% else %}
+                        <div class="dash-check"  id="checker-{{user.id}}">
+                            <span class="dash-circle"></span>
+                            <input type="checkbox" class="checker checker-for-request" data-id="checker-{{user.id}}" data-linkToEditor="{% url 'site-admin:make-editor' user.id %}" data-forMarker="marker-{{user.id}}">
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include 'paginator.html' %}
+    </div>
+</div>
+
+
+{% endblock content %}

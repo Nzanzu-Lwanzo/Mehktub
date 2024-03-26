@@ -1,0 +1,4 @@
+
+1. Les images doivent avoir mesurer 612px de largeur et entre 407px et 410px de hauteur.
+2. Préconiser les hashtags déjà existants. Il existe un algorithme qui propose aux utilisateurs plus d'articles à lire en se basant sur les hashtags de l'articles qu'il sont en train de lire. Si vos trois hashtags sont nouveaux, vous n'aurez rien d'autre à proposer à vos utilisateurs et on ne proposera pas non plus vos articles.
+3. http://localhost:8000/post/read-article/portrait-qui-etait-malcolm-x-combattant-des-droits-des-noirs-aux-etats-unis/34/

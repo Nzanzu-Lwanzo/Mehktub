@@ -1,0 +1,59 @@
+{% extends 'administration/admin-panel.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    ADMIN|COMMENTS
+{% endblock %}
+
+{% block content %}
+<div class="dash-comments-section" id="dash-comments-section">
+    <div class="dash-top-section">
+        <h2 class="dash-end-section">Commentaires</h2>
+
+        <ul>
+            <span class="dash-section-top-btn dash-counter">
+                <li id="dash-count-comments">
+                    {{ numberOfRessource }}
+                </li>
+            </span>
+            
+            <!-- FILTRAGE -->
+            <a href="{% url 'site-admin:delete-all-comments' %}" class="dash-section-top-btn">
+                <li>
+                    DeleteAll
+                </li>
+            </a>
+
+            <a href="#" class="dash-section-top-btn">
+                <li>
+                    WriteInFile
+                </li>
+            </a>
+        </ul>
+    </div>
+
+    <div class="dash-comment-cards">
+        {% csrf_token %}
+        {% for comment in allData %}
+            <div class="dash-comment-card" id="comment-{{ comment.id }}">
+                <form class="dash-icons" method="DELETE">
+                    <a href="{{ comment.delete_comment }}" class="fa-solid fa-trash dash-delete" data-forDeleting="comment-{{ comment.id }}"></a>
+                </form>
+                <div class="dash-text">
+                    <p>
+                        {{comment.content}}
+                    </p>
+                    
+                    <span class="dash-commentor">{{ comment.whoPost|formatUserName }}</span>
+                    <span class="dash-date">{{ comment.postDate|formatDate }}</span>
+                    <span>
+                        <a href="{{ comment.whichArticle.get_absolute_url }}">{{ comment.whichArticle.title }}</a>
+                    </span>
+                </div>          
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'paginator.html'  %}
+</div>
+
+{% endblock content %}

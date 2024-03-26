@@ -1,0 +1,196 @@
+{% load static %}
+{% load custom-filters %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="From the database">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>Mehktub Homepage</title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+
+    <!-- Custom stylesheets -->
+    <link rel="stylesheet" href="{% static 'extra/css/homepage.css' %}">
+    <!-- Custom importmap -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js files -->
+    <!-- Custom js script -->
+    <script type="module" src="{% static 'extra/js/homepage.js' %}" defer></script>
+</head>
+<body>
+    <div class="hm-sidebar-pusher">
+        <div class="hm-hero"  id="acceuil">
+            <header class="hm-header">
+                <span class="hm-site-name">Mehktub</span>
+                <nav class="hm-menu-links">
+                    <ul class="hm-links-text">
+                        <li><a href="#acceuil" class="hm-home-link">Accueil</a></li>
+                        <li><a href="#contacts" class="hm-contact-link">Contacts</a></li>
+                        {% if request.user.is_superuser %}
+                            <a href="{% url 'site-admin:dashboard' %}" class="hm-toAdmin">Admin</a>
+                        {% endif %}
+
+                        {% if user|isEditor and not user.is_superuser %}
+                            <a href="{% url 'site-admin:editor-space' %}" class="hm-toAdmin">
+                                <span class="fa-solid fa-dashboard"></span>
+                            </a>
+                        {% endif %}
+                    </ul>
+                    <ul class="hm-icons">
+                        <li class="hm-icon hm-search"><span class="fa-solid fa-search"></span></li>
+                        <li class="hm-icon hm-menu-hamburger">
+                           <span class="fa-solid fa-bars hm-menu"></span>
+                        </li>
+                    </ul>
+                </nav>
+                <form action="{% url 'post:search-article' %}" method="GET" class="hm-search-form">
+                    {% csrf_token %}
+                    <div class="hm-wrapper">
+                        <input type="search" class="hm-search-input" name="search-input" placeholder="Tapez votre recherche...">
+                        <button class="hm-submit-btn" type="submit">
+                            <span class="fa-solid fa-search"></span>
+                        </button>
+                    </div>
+                </form>
+            </header>
+
+            <div class="hm-content">
+                <div class="hm-one">
+                    <span class="hm-welcome">Bienvenue sur le blog <span class="hm-imp">Mehktub</span></span>
+                    <p class="hm-present">
+                        Nous sommes un blog de partage  d'<em>opinions</em>, de <em>passion</em> et de <em>connaissances</em> basé à Lubumbashi. Nos articles, écrits dans un style <em>accessible</em> et <em>amusant</em>, vous feront <em>découvrir</em>, <em>rêver</em>, <em>voyager</em>, <em>réfléchir</em> et <em>kiffer la vie</em>.                     
+                    </p>
+                    
+                    {% if user.is_authenticated %}
+                        <span id="hm-is-authenticated" class="hm-hero-btn">Connecté</span>
+                    {% endif %}
+
+                    {% if request.user.is_anonymous %}
+                        <a href="{% url 'management:logUserIn' %}" id="hm-sign-in-btn" class="hm-hero-btn">Connectez-vous</a>
+                    {% endif %}
+                </div>
+
+                <div class="hm-two">
+                   <!-- Placeholder -->
+                </div>
+            </div>
+        </div>
+
+        <div class="hm-topics">
+            <span class="hm-title">Nos Rubriques</span>
+            <div class="hm-cards">
+                {% for category in categories %}
+                    <div class="hm-card">
+                        <div class="hm-image">
+                            <img src="{{ category.image.url }}" alt="{{ category.imageAlt }}">
+                        </div>
+                        <div class="hm-content">
+                            <h4 class="hm-title">{{ category.title }}</h4>
+                            <p class="hm-description">
+                                {{ category.description}}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <section class="hm-last-articles">
+            <span class="hm-title">Nos articles</span>
+
+            <div class="hm-container">
+                <div class="hm-one">
+                    <!-- LES ARTICLES LES PLUS RECENTS -->
+                    {% for article in someArticles %}
+                        <div class="hm-card">
+                            <div class="hm-image">
+                                <span class="hm-info">
+                                    <span class="fa-solid fa-tag"></span>
+                                    <span>
+                                        {{ article.category.title }}
+                                    </span>
+                                </span>
+                                <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+                                <span class="gen-hashtags">
+                                    {% for hashtag in article.hashtags.all %}
+                                        <span class="gen-hashtag">#{{hashtag.hashtag}}</span>
+                                    {% endfor %}
+                                </span>
+                            </div>
+
+                            <div class="hm-card-content">
+                                <h3 id="hm-bigger-t">{{ article.title }}</h3>
+                                <p class="hm-bigger-p">
+                                    {{article.sumItUp}}
+                                </p>
+                                <p class="hm-author-p">
+                                    Auteur :
+                                    <span class="hm-author">
+                                        {% if article.author %}
+                                            {{ article.author.username|formatUserName }}
+                                        {% else %}
+                                            Compte supprimé
+                                        {% endif %}
+                                    </span>
+                                </p>
+                                {% if user.is_authenticated %}
+                                    <a href="{{ article.get_absolute_url }}" class="hm-btn-link">Lire</a>
+                                {% else %}
+                                    <a href="{% url 'management:logUserIn' %}" class="hm-btn-link">Lire</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="hm-comments">
+
+           <ul class="hm-slide">
+                <li>
+                    <span class="hm-title">Ce que les gens disent de <span class="hm-site-name">Mehktub</span></span>
+                </li>
+
+                {% for opinion in whatPeopleSay %}
+                    {% if opinion.postIt == True %}
+                        <li>
+                            <div class="hm-comment">
+                                <p class="hm-text">
+                                    {{ opinion.content }}
+                                </p>
+                                <span class="hm-name">{{ opinion.whoSaid }}</span>
+                                <span class="fa-solid fa-bookmark hm-icon"></span>
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- <span class="fa-solid fa-chevron-left hm-left"></span>
+                <span class="fa-solid fa-chevron-right hm-right"></span> -->
+           </ul>
+        </section>
+
+       <!-- SOCIAL MEDIA SECTION -->
+       {% include 'social.html' %}
+       <!-- END SOCIAL MEDIA SECTION -->
+
+        <!-- ABOUTE ME SECTION -->
+        <!-- FOOTER SECTION -->
+        {% include 'aboutMe.html' %}
+        {% include 'footer.html' %}
+        <!-- END ABOUTE ME SECTION -->
+        <!-- END FOOTER SECTION -->
+
+        <!-- BACK TO TOP -->
+            {% include 'backToTop.html' %}
+        <!-- END BACK TO TOP -->
+    </div>
+</body>
+</html>

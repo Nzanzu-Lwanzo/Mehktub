@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="From the database">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>
+        Connectez-vous
+    </title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'management/css/base_form.css' %}">
+    <!-- Importmap for modules -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js script -->
+    <script type="module" src="{% static 'management/js/base_form.js' %}" defer></script>
+
+</head>
+<body>
+
+    <a href="{% url 'extra:homepage' %}" id="bf-back">
+        <span class="fa-solid fa-arrow-left"></span>
+    </a>
+
+    <form action="{% url 'management:logUserIn' %}" method="POST" id="form" class="form-logIn">
+        {% csrf_token %}
+        <span class="bf-title">
+            Connectez-vous
+        </span>
+        <div class="bf-wrapper">
+            <div class="bf-input-box">
+                <label for="pseudo">Pseudo</label>
+                <input type="text" name="username" id="username" class="username" placeholder="Quel est votre prenom ?"  autocomplete="on" autocapitalize="words" maxlength="16" value="{{ request.user.username }}">
+            </div>
+
+            <div class="bf-input-box">
+                <label for="password">E-mail</label>
+                <input type="password" name="password" id="password" class="password" placeholder="Créez un password" autocomplete="on" autofill="false" maxlength="12" value="{{ request.user.password }}">
+            </div>
+
+            <a href="{% url 'management:signUserUp' %}" class="bf-noAccount">
+                <span class="fa-solid fa-arrow-right"></span>
+                <span>Je n'ai pas de compte</span>
+            </a>
+            
+        </div>
+        <button type="submit" class="bf-submit-btn">
+            Me connecter
+        </button>
+        {% if messages %}
+            {% for message in messages %}
+                <span class="bf-backend-message">{{message}}</span>
+            {% endfor %}
+        {% endif %}
+    </form>
+    
+    {% include 'modal.html' %}
+</body>
+</html>

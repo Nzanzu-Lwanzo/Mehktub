@@ -1,0 +1,754 @@
+// LES VARIABLES
+$bgw : #F7FAFB;
+$bgb : #090A0C;
+$fg: black;
+$bgb_2:#333;
+$accent:#FDD017;
+$success:#00FF00;
+$title:Title;
+$text:Text;
+$font:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$radius:5px;
+$topbar_height:70px;
+$padding_box:3rem;
+$sidebar:25vw; 
+$sdb_show_duration:.4s;
+
+// LES MIXINS
+@mixin flex_row(
+    $alit:center,
+    $jusco:space-between,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: row;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin flex_column(
+    $alit:center,
+    $jusco:center,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: column;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin grid_col(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-columns: $div;
+    gap: $gap;
+}
+
+@mixin grid_row(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-rows: $div;
+    gap: $gap;
+}
+
+@mixin cutTextLong($lines:1){
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.car-btn{
+    padding: 1rem 2rem;
+    background-color: $bgb_2;
+    color: white;
+    cursor: pointer;
+    transition: .4s ease-out;
+    border-radius: 25px;
+}
+
+.hov-btn{
+    &:hover,
+    &:active{
+        background-color: $accent;
+        color: black;
+    }
+}
+
+// STYLE GENERAL
+
+::-moz-selection {
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+::selection{
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+*{
+    box-sizing: border-box;margin:0;padding: 0;
+    border: none;outline: none;
+    text-decoration: none;list-style-type: none; 
+
+    // Le Télécharger ou inclure le CDN
+    font-family: Poppins;
+}
+
+
+html{
+    scroll-behavior: smooth;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    background-color: #eee;
+    background-color: lighten($color: $bgb, $amount: 10);
+}
+
+.car-search-form{
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background-color: $accent;
+    padding: 1rem;
+
+    transform: translateY(-100%);
+    transition: .4s ease-out;
+
+    .car-wrap-search{
+        width: 80%;
+        margin: auto;
+        @include flex_row($jusco:flex-start,$alit:center);
+
+        input,button{
+            height: 40px;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+
+        input{
+            width: 100%;
+
+            &::-webkit-search-cancel-button{
+                display: none;
+            }
+        }
+
+        button{
+            background-color: $bgb;
+            color: white;
+            cursor: pointer;
+        }
+    }
+
+    .car-hide-search-form{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        background-color: $bgb;
+        color: white;
+        @include flex_column;
+        cursor: pointer;
+    }
+}
+
+.car-search-form-js{
+    transform: initial;
+}
+
+#create-article-form{
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    @include flex_column($alit:stretch,$gap:2rem);
+
+    .car-form-richText,
+    .car-form-top,
+    .car-topbar,
+    .car-form-btn{
+        padding: 1rem;
+        color: white;
+        background-color: lighten($color: $bgb, $amount: 4);
+        // box-shadow: 1px 1px 5px 1px grey;
+        border-radius: 8px;
+    }
+
+    .car-form-btn{
+        @include flex_row($alit:center,$jusco:flex-start,$gap:1rem);
+    }
+
+    .car-fields{
+        @include grid_col($div:repeat(2,1fr),$gap:2rem);
+        align-items: start;
+    }
+
+    .car-topbar{
+        @include flex_row;
+        .car-links{
+            @include flex_row($gap:20px,$jusco:flex-end);
+
+        }
+    
+        .car-round-btn{
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid grey;
+            transition: .3s ease-out;
+            color: white;
+    
+            &:hover,
+            &:active{
+                border-color: $accent;
+                background-color: $accent;
+                color: $bgb;
+            }
+        }
+    
+        .car-circle-btn{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: $bgb;
+            font-size: 1rem;
+            @include flex_column;
+            transition: .4s;
+    
+            &:hover,
+            &:active{
+                background-color: $accent;
+            }
+        }
+    }
+
+    .car-form-richText{
+        min-height: 20vh;
+        @include flex_column($alit:flex-end);
+
+        a{
+            color: blue !important;
+        }
+        
+        label[for="id_content"],
+        label[for="id_image"],
+        // label[for="id_category"],
+        // label[for="id_title"],
+        // label[for="id_sumItUp"],
+        // label[for="id_hashtags"],
+        // label[for="id_imageAlt"],
+        // label[for="id_imageAuthor"],
+        #id_image
+        // #id_category,
+        // #id_title,
+        // #id_sumItUp,
+        // #id_hashtags,
+        // #id_imageAlt,
+        // #id_imageAuthor
+        {
+            display: none;
+        }
+    }
+
+    .car-form-top{
+        
+        #car-section-title{
+            margin-left: 1rem;
+        }
+
+        .car-left,
+        .car-right {
+            @include flex_column($alit:stretch,$gap:1rem);
+            padding: 1rem;
+
+            .car-main-img{
+                border: 1px dashed $bgb_2;
+                border-radius: 5px;
+                height: 400px;
+                object-fit: cover;
+                background-color: $bgw;
+                position: relative;
+
+                #image-btn,
+                #display-all-images {
+                    position: absolute;
+                    left: 1rem;
+                    top: 1rem;
+                    background-color: $bgb_2;
+                    color: white;
+                    border-radius: 5px;
+                    padding:10px 25px;
+                    cursor: pointer;
+
+                    .car-icon {
+                        display: none;
+                    }
+                }
+                .car-preview-img{
+                    display: none;
+                    object-fit: cover;
+                }
+                .car-preview-img-js{
+                    display: block;
+                }
+
+                #car-preview-img-always-show{
+                    display: block;
+                }
+            }
+
+            .category-select{
+                border: 1px solid 5px;
+                background-color: $bgw;
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            .car-select{
+                @include flex_column($alit:flex-start);
+                select{
+                    width: 100%;
+
+                    .option-hide-js{
+                        display: none;
+                    }
+                }
+                label{
+                    font-size: .8rem;
+                }
+
+                .car-underselect{
+                    width: 100%;
+                    padding: 10px;
+                    @include flex_row($jusco:flex-end,$gap:1rem);
+
+                    input{
+                        padding: 5px 10px;
+                    }
+
+                    .car-add-btn{
+                        height: 40px;
+                        width: 40px;
+                        background-color: $bgb_2;
+                        color: $bgw;
+                        cursor: pointer;
+                        border-radius: 50%;
+                        @include flex_column;
+                        opacity: 0;
+                        pointer-events:none;
+                        transition: .4s ease-in;
+                    }
+
+                    .car-add-btn-js{
+                        opacity: 1;
+                        pointer-events:all;
+                    }
+                }
+            }
+
+            input:not(input[type="checkbox"],input[type="radio"],input[type="file"]),
+            textarea{
+                outline: 1px solid $bgb_2;
+                padding: 10px 20px;
+                font-size: 1rem;
+                resize: none;
+                border-radius: 5px;
+            }
+
+            .outline-js{
+                outline: 2px solid $accent !important;
+            }
+
+            textarea {
+                height: 200px;
+            }
+
+            .car-chosen-hashtags{
+                position: absolute;
+                bottom: 1rem;
+                left: 1rem;
+                @include grid_col($div:repeat(3,1fr),$gap:.5rem);
+        
+
+                .car-hashtag{
+                    display: inline-block;
+                    padding: 5px 12px;
+                    background-color: $bgb;
+                    color: $accent;
+                    border-radius: 5px;
+                    font-size: .9rem;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    #submit-btn{
+        @extend .car-btn;
+        @extend .hov-btn;
+    }
+
+    #put-draft{
+        @extend .car-btn;
+    }
+}
+
+.gen-back-to-top {
+    position: fixed;
+    z-index: 10000;
+    bottom: 20px;
+    right: 30px;
+    padding: 15px;
+    border-radius:50%;
+    background-color: $accent;
+    @include flex_column;
+    color: black;
+    opacity: 0;
+    transition: .4s;
+    transform: translateY(10px);
+}
+
+.gen-back-to-top-js {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+
+// LISTER TOUTES LES IMAGES
+.dash-all-images{
+    position: fixed;
+    z-index: 102;
+    background-color: rgba($color: $bgb, $alpha: .8);
+    backdrop-filter: blur(5px);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    top:0;left:0;right:0;bottom:0;
+
+    display: none;
+
+    .dash-images-container{
+        height: 90vh;
+        width: 90%;
+        margin: auto;
+        background-color: $bgw;
+        border-radius: $radius;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        .dash-top{
+            @include flex_row;
+            background-color: $bgb;
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+
+            .dash-btns{
+                @include flex_row($jusco:flex-end,$gap:1rem);
+            }
+
+            #image-btn,
+            .validate-img {
+                background-color: $bgb_2;
+                color: white;
+                border-radius: 5px;
+                padding:10px 25px;
+                cursor: pointer;
+                width: auto;
+
+                .car-icon {
+                    display: none;
+                }
+            }
+
+            .dash-valid {
+                background-color: $success;
+                color: black;
+            }
+
+            .dash-non-valid {
+                background-color: red;
+            }
+
+            .dash-close-image-picker{
+                height: 30px;
+                width: 30px;
+                background-color: $accent;
+                color:$bgb;
+                @include flex_column;
+                border-radius: 50%;
+            }
+            
+        }
+
+        h2{
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1.5rem;
+        }
+
+        .dash-wrap{
+            @include grid_col($div:repeat(2,1fr),$gap:2rem);
+            padding: 2rem;
+
+            .dash-image,
+            .dash-validation {
+                min-height: 450px;
+            }
+
+            .dash-image {
+                object-fit: contain;
+                overflow: hidden;
+                border: 5px solid $bgb;
+                @include flex_column;
+                position: relative;
+                background-color: $bgb;
+
+                p{
+                    font-size: 2rem;
+                    color: $accent;
+                }
+
+                img{
+                    height: 100%;width:100%;
+                    position: absolute;top: 0;left: 0;right: 0;bottom: 0;
+                    object-fit: cover;
+                }
+            }
+
+            .dash-validation {
+                @include flex_column($alit:stretch,$jusco:flex-start);
+                table {
+                    // width: 60%;
+                    // margin-left: auto;
+                    // margin-right: auto;
+                    border-collapse: collapse;
+
+                    caption {
+                        font-size:1.5rem;
+                        font-weight: bold;
+                    }
+
+                    &,th,td {
+                        border-bottom: 1px solid $bgb;
+                        text-align: left;
+                        vertical-align: center;
+                    }
+
+                    td,th{
+                        padding: 1rem;
+                    }
+
+                    .dash-no-validated{
+                        color: red;
+                    }
+                }
+
+                .dash-note{
+                    padding: 1rem 0;
+                }
+
+               
+            }
+            /*
+            .dash-image-card{
+                position: relative;
+                
+                .chosen{
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 50%;
+                    background-color: $success;
+                    position: absolute;
+                    left: 1rem;
+                    bottom: 1rem;
+
+                    display: none;
+                }
+
+                .chosen-js{
+                    display: inline-block;
+                }
+            }
+
+            .blurer {
+                position: absolute;
+                top:0;left:0;right:0;bottom:0;
+                background-color: rgba($color: $bgb, $alpha: .8);
+                padding: 1rem;
+                font-size: 1rem;
+                color: white;
+
+                opacity: 0;
+                pointer-events: none;
+                transition: .2s ease-out;
+
+                .selector{
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 50%;
+                    background-color: $accent;
+                    @include flex_column;
+                    position: absolute;
+                    bottom: 1rem;right: 1rem;
+                    color: black;
+                }
+            }
+
+            .dash-image-card:hover{
+                .blurer {
+                    opacity: 1;
+                    pointer-events: all;
+                }
+            } 
+            */
+
+            
+            
+            
+
+            
+        }
+    }
+
+}
+
+.dash-all-images-js{
+    @include flex_column;
+}
+
+@media only all and (max-width:1200px) {
+    .dash-all-images .dash-images-container {
+        .dash-top {
+            z-index: 30;
+        }
+        .dash-wrap {
+            grid-template-columns: auto;
+        }
+    }
+}
+
+@media only all and (max-width:905px){
+    #create-article-form{
+        .car-topbar{
+            @include flex_column($alit:flex-start,$gap:1rem);
+        }
+
+        .car-form-top .car-fields{
+            @include flex_column($alit:stretch);
+        }
+    }
+}
+
+
+@media only all and (max-width:700px) {
+    .dash-all-images .dash-images-container {
+        .dash-top {
+            h2,h3 {
+                display: none;
+            }
+        }
+    }
+}
+
+
+@media only all and (max-width:460px){
+    #create-article-form{
+        padding: 2rem 20px;
+        gap: 10px;
+       
+        .car-form-richText,
+        .car-form-top,
+        .car-topbar,
+        .car-form-btn{
+            padding: 1rem;
+            color: white;
+            width: 100%;
+            background-color: transparent;
+            border-radius: 0;
+        }
+
+        .car-form-top{
+            padding: 0;
+            
+            #car-section-title{
+                margin-bottom: 1rem;
+                margin-left: .5rem;
+            }
+
+            .car-left,
+            .car-right{
+                padding: 0;
+
+                .car-main-img #image-btn .car-text{
+                    display: none;
+                }
+
+                .car-main-img #image-btn .car-icon {
+                    display: block;
+                }
+
+                .car-main-img{
+                    height: 200px;
+                    object-fit:none;
+                }
+
+
+                .car-chosen-hashtags {
+                    grid-template-columns: repeat(2,1fr);
+                    left: .5rem;
+
+                    .car-hashtag{
+                        padding: 5px;
+                        font-size:.8rem;
+                    }
+                }
+            }
+        }
+
+        .car-form-richText{
+            padding: 0;
+        }
+
+        .car-form-top .car-fields{
+            @include flex_column($alit:stretch);
+        }
+    }
+}
+
+
+@media only all and (max-width:450px){
+    #create-article-form .car-form-top {
+        .car-left,
+        .car-right {
+            .car-select .car-underselect {
+                justify-content: flex-end;
+                .car-add-hashtag {
+                    width: 80%;
+                    transform: translateX(-8px);
+                }
+            }
+        }
+    }
+}

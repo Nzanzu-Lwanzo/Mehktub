@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="From the database">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>
+        {% block documentTitle %}
+        {% endblock documentTitle %}
+    </title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'management/css/base_form.css' %}">
+    <!-- Importmap for modules -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js script -->
+    <script type="module" src="{% static 'management/js/base_form.js' %}" defer></script>
+
+</head>
+<body>
+
+    <a href="#" id="bf-back">
+        <span class="fa-solid fa-arrow-left"></span>
+    </a>
+
+    {% block formAction %}
+            <form action="" method="POST" id="form" class="form-logIn">
+    {% endblock formAction %}
+    {% csrf_token %}
+        <span class="bf-title">
+            {% block actionBlock %}
+            {% endblock actionBlock %}
+        </span>
+        <div class="bf-wrapper">
+            <div class="bf-input-box">
+                <label for="pseudo">Pseudo</label>
+                <input type="text" name="username" id="username" class="username" placeholder="Quel est votre prenom ?"  autocomplete="on" autocapitalize="words" maxlength="16">
+            </div>
+
+            {% block needEmail %}
+            {% endblock %}
+
+            <div class="bf-input-box">
+                <label for="password">E-mail</label>
+                <input type="password" name="password" id="password" class="password" placeholder="Créez un password" autocomplete="on" autofill="false" maxlength="12">
+            </div>
+
+            {% block moreOnUser%}
+            {% endblock moreOnUser %}
+            
+        </div>
+        <button type="submit" class="bf-submit-btn">
+            {% block meAction %}
+            {% endblock meAction %}
+        </button>
+    </form>
+    
+
+    
+    <div class="bf-warn">
+        <p>*Cher utilisateur, <span class="bf-important">ces données</span> ne nous servent qu'à vous identifier lorsque vous commentez. Elles <span class="bf-important">sont sécurisées</span> et ne seront partagées ni avec des entreprises ni avec des tierces personnes.</p>
+        <p>**Cochez la case <span class="bf-important">Se souvenir de moi</span> pour ne pas avoir à les retaper chaque fois que vous voudrez commenter.</p>
+        <p>***Cochez la case <span class="bf-important">Je m'abonne à la Newsletter</span> pour recevoir un mail à chaque nouvel article publié.</p>
+
+        <span class="fa-solid fa-close bf-closeInfoCard"></span>
+    </div>
+
+    {% include 'modal.html' %}
+</body>
+</html>

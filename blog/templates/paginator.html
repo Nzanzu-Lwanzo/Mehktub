@@ -1,0 +1,102 @@
+<div class="pagin-pagination">
+    <ul id="pagin-list">
+        {% if allData.has_previous %}
+            <a href="?page={{allData.previous_page_number}}" id="pagin-left">
+                <li>
+                    <span class="fa-solid fa-arrow-left"></span>
+                </li>
+            </a>
+        {% endif %}
+
+            {% for p in totalPages %}
+                <a href="?page={{p}}" class="pagin-hide-on-mobile">
+                    <!-- Si la page actuelle correspond à un nombre -->
+                    <!-- ce nombre sera mis en valeur -->
+                    <!-- class="pagin-current-pagination" -->
+                    <li class="pagin-hide-on-mobile">
+                        {{p}}
+                    </li>
+                </a>
+            {% endfor %}
+           
+        {% if allData.has_next %}
+            <a href="?page={{allData.next_page_number}}" id="pagin-right">
+                <li>
+                    <span  class="fa-solid fa-arrow-right"></span>
+                </li>
+            </a>
+        {% endif %}
+    </ul>
+    <span class="pagin-pagonation-locate">{{ allData.number}} / {{ allData.paginator.num_pages }}</span>
+</div>
+
+<style>
+    .pagin-pagination {
+    background-color: inherit;
+    padding: 10px 3rem;
+    margin-top: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+     .pagin-pagination ul#pagin-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    gap: 20px;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+    .pagin-pagination ul#pagin-list a {
+    color: inherit;
+    }
+     .pagin-pagination ul#pagin-list li {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    border: 0.7px solid black;
+    cursor: pointer;
+    }
+     .pagin-pagination ul#pagin-list li:hover,  .pagin-pagination ul li:focus {
+    background-color: #090A0C;
+    color: #FDD017;
+    }
+     .pagin-pagination ul#pagin-list li.pagin-current-pagination {
+    background-color: #090A0C;
+    color: #FDD017;
+    }
+     .pagin-pagination .pagin-pagonation-locate {
+    font-size: 1.1rem;
+    display: inline-block;
+    margin-top: 5px;
+    }
+
+    @media only all and (max-width:768px){
+        .pagin-hide-on-mobile {
+            display: none;
+        }
+    }
+</style>

@@ -1,0 +1,191 @@
+{% extends 'forum/base_forum.html' %}
+{% load static %}
+
+{% block docTitle %} Sujet du forum {% endblock docTitle%}
+
+{% block customCSS%}
+    <link rel="stylesheet" href="{% static 'forum/css/chat_room.css' %}">
+{% endblock customCSS %}
+
+{% block customJS%}
+    <script type="module" src="{% static 'forum/js/chat_room.js' %}" defer></script>
+{% endblock customJS%}
+
+{% block moreInTopbar %}
+    <div class="cr-about-forum">
+        <span class="fa-solid fa-info bfr-topbar-icon"></span>
+    </div>
+    <div class="cr-display-reply-box">
+        <span class="fa-solid fa-comment bfr-topbar-icon"></span>
+    </div>
+{% endblock %}
+
+{% block content%}
+  
+    <div class="cr-chatboxes">
+        <div class="cr-wrap-chatboxes">
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-mine cr-box">
+                <span class="cr-username">Moi</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                    Exercitationem, obcaecati maiores quam dignissimos
+                    est corrupti?
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-mine cr-box">
+                <span class="cr-username">Moi</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                    Exercitationem, obcaecati maiores quam dignissimos
+                    est corrupti?
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+
+            <div class="cr-others cr-box">
+                <span class="cr-username">Aaliyah</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+
+            <div class="cr-mine cr-box">
+                <span class="cr-username">Moi</span>
+                <p class="cr-usertext">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                    repellat omnis voluptatem dolore incidunt hic.
+                    Exercitationem, obcaecati maiores quam dignissimos
+                    est corrupti?
+                </p>
+                <span class="cr-date">Il y a 2 jours</span>
+                
+                <button class="cr-reply">
+                    <span class="fa-solid fa-share"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+        
+        
+       
+    <form action="" method="POST" class="cr-write">
+        {% csrf_token %}
+        <div class="cr-wrapper">
+            <textarea name="user-text" id="user-text" placeholder="Réplique..." autofocus></textarea>
+            <button type="submit" class="cr-send-btn">
+                <span class="fa-solid fa-paper-plane"></span>
+            </button>
+        </div>
+    </form>
+
+    <!-- TEMPLATE D'UNE CHATBOX - POUR EXEMPLE - PEUT ETRE SUPPRIME -->
+    <template id="tpl">
+        <div class="cr-others cr-box">
+            <span class="cr-username">Aaliyah</span>
+            <p class="cr-usertext">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Labore quos harum dolorum quia at! Et necessitatibus deserunt,
+                repellat omnis voluptatem dolore incidunt hic.
+            </p>
+            <span class="cr-date">Il y a 2 jours</span>
+            
+            <button class="cr-reply">
+                <span class="fa-solid fa-share"></span>
+            </button>
+        </div>
+    </template>
+{% endblock %}

@@ -1,0 +1,621 @@
+// LES VARIABLES
+$bgw : #F7FAFB;
+$bgb : #090A0C;
+$fg: black;
+$bgb_2:#333;
+$accent:#FDD017;
+$title:Title;
+$text:Text;
+$font:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$radius:5px;
+$topbar_height:60px;
+$padding_box:30px 3rem;
+$padding_card:10px;
+$sidebar:50vw;
+$sdb_show_duration:.4s;
+
+// LES MIXINS
+@mixin flex_row(
+    $alit:center,
+    $jusco:space-between,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: row;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin flex_column(
+    $alit:center,
+    $jusco:center,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: column;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin grid_col(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-columns: $div;
+    gap: $gap;
+}
+
+@mixin grid_row(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-rows: $div;
+    gap: $gap;
+}
+@mixin cutTextLong($lines:1){
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// LE STYLE GENERAL
+html{
+    scroll-behavior: smooth;
+}
+
+::-moz-selection {
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+::selection{
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+// Le lien pour dire qu'on n'a pas de compte
+// J'avais la flemme d'aller le mettre plus bas
+// 17 Janvier 2024
+// 22h55
+// Match RDC-Zambie
+// Je ne suis même pas le match
+// J'ai pas de télé
+// Putain de merde !!!!!!!!!!
+.bf-noAccount:hover,
+.bf-noAccount:focus {
+    color: $accent;
+}
+
+* {
+    padding: 0;margin: 0;
+    border: none;outline: none;
+    box-sizing: border-box;text-decoration: none;
+    font-family: $text,$font;list-style: none;color: inherit;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+
+body{
+    min-height: 100vh;
+    overflow: hidden;
+    @include flex_column;
+    background-color: $bgb_2;
+    position: relative;
+}
+
+#bf-back,
+#bf-circle-icon {
+    @include flex_column;
+    position:absolute;
+    z-index: 100;
+    top: 20px;
+    left: 50px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,.7);
+    color: $accent;
+    cursor: pointer;
+}
+
+.bf-backend-message{
+    position: fixed;
+    height: 70px;
+    width: 100vw;
+    background-color: $accent;
+    color: $bgb;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    @include flex_column;
+    transition: .4s ease-out;
+}
+
+.bf-backend-message-js{
+    display: none;
+    transition: .4s ease-out;
+}
+
+#md-form-modify {
+    padding: 0 !important;
+    border-radius: $radius;
+    overflow: hidden;
+    
+
+    
+    .md-topMenu{
+        @include grid_col($div:repeat(3,1fr));
+        text-align: center;
+
+        li{
+            background-color: $accent;
+            padding: 20px 10px;
+            color: $bgb;
+
+            &:hover,
+            &:active{
+                background-color: $bgb;
+                color: $accent;
+                transition: .2s ease-out;
+            }
+
+            &.active-js{
+                background-color: $bgb;
+                color: $accent;
+            }
+        }
+    }
+
+    .md-inputs{
+        padding: 1rem;
+        min-height: 100%;
+
+        .block{
+            display: none;
+
+            .bf-submit-btn{
+                padding:8px 15px;
+                background-color: $accent;
+                color: black;
+                border-radius: $radius;
+                margin-top: 20px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+        }
+
+        .active-js{
+            display: block;
+        }
+    }
+}
+
+.md-messages{
+    position: fixed;
+    top: 0;
+    left: 0;right: 0;
+    padding: 1rem;
+    background-color: $accent;
+    color: black;
+    text-align: center;
+    transition: .4s ease-out;
+}
+
+.md-messages-js{
+    transform: translateY(-100%);
+}   
+
+#form,
+.form {
+    width: 40%;
+    margin: auto;
+    background-color: $bgb;
+    color: white;
+    padding: $padding_box;
+    border-radius: $radius;
+    position: relative;
+
+    .bf-title{
+        width: 100%;
+        text-align: center;
+        font-size: 3em;
+    }
+
+    .bf-wrapper {
+        margin-top: 20px;
+        @include flex_column($alit:stretch,$jusco:space-around,$gap:20px);
+        label:not(.bf-cl){
+            display: none;
+        }
+
+        input:not(input[type="checkbox"]) {
+            width: 100%;
+            height: 40px;
+            padding: 10px 20px;
+            border-radius: $radius;
+            font-size: 1rem;
+            color: black;
+            border: 2px solid transparent;
+
+            &:focus{
+                border-color:$accent;
+            }
+
+            &.bf-error-input{
+                border-color: red;
+            }
+        }
+
+
+        .bf-checkboxes .bf-input-box{
+            @include flex_row($jusco:flex-start,$gap:10px);
+
+            input[type="checkbox"]{
+                accent-color: $accent;
+            }
+        }           
+   }
+
+   .bf-warn{
+        display: none;
+   }
+
+   .bf-submit-btn{
+        padding:15px 20px;
+        background-color: $accent;
+        color: black;
+        border-radius: $radius;
+        margin-top: 20px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+}
+
+.bf-warn{
+    position: fixed;
+    bottom: 0;
+    background-color: rgba(0,0,0,.9);
+    width: 100%;
+    font-size: 1em;
+    padding: $padding_box;
+    color: white;
+    transform: translateY(100%);
+    transition: .4s;
+
+    .bf-important{
+        color: $accent;
+    }
+
+    .bf-closeInfoCard{
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 1.5em;
+        color: red;
+        cursor: pointer;
+    }
+}
+
+.bf-warn-js{
+    transform: initial;
+}
+
+.bf-ask-user-to-wait{
+    position: fixed;
+    z-index: 120;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(255,255,255,.1);
+    backdrop-filter: blur(1px);
+    height: 100%;
+    width:100%;
+    @include flex_column;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+
+    .bf-wait-card{
+        width: 60%;
+        margin: auto;
+        height: 100px;
+        background-color: $bgw;
+        border-radius: 8px;
+        @include flex_column;
+        color: $bgb;
+    }
+}
+
+.bf-ask-user-to-wait-js{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.helptext{
+    display: none;
+}
+
+
+
+// POUR LA CARTE D'ARTICLE QUI REMPLACE LE FORMULAIRE
+.gen-hashtags{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 0;
+    width: 100%;
+}
+.gen-hashtag{
+    display: inline-block;
+    padding: .1rem .3rem;
+    /* border: 1px solid white; */
+    border-radius: 5px;
+    color: $accent;
+    background-color: $bgb;
+    // backdrop-filter: blur(1px);
+}
+
+.form-replace-card {
+    min-height: 400px;
+    width: 300px;
+    background: #090A0C;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border: 2px solid #FDD017;
+    border-radius: 8px;
+  }
+.form-replace-card .form-replace-card-img {
+    position: relative;
+  }
+.form-replace-card .form-replace-card-img img {
+    width: 100%;
+    height: 100%;
+}
+.form-replace-card .form-replace-sum-article {
+    padding: 1em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+  }
+.form-replace-card .form-replace-sum-article h3 {
+    color: #FDD017;
+    font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 1.5em;
+  }
+.form-replace-card .form-replace-sum-article p {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+.form-replace-card .form-replace-sum-article .form-replace-date {
+    color: #FDD017;
+  }
+.form-replace-card .form-replace-sum-article .form-replace-read {
+    @include flex_row($gap:15px);
+    padding: 10px 20px;
+    background-color: #FDD017;
+    color: black;
+    border-radius: 7px;
+    margin-top: 5px;
+}
+
+
+@media only all and (max-height: 530px){
+    .form-replace-card .form-replace-sum-article p {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+}
+
+@media only all and (max-width: 425px) {
+
+     
+    #bf-back{
+        left: auto;
+        top: 10px;
+        right: 20px;
+    }
+
+    body{
+        box-sizing: border-box;
+    }
+}
+
+@media only all and (max-width: 375px){
+    .form-replace-card .form-replace-sum-article p {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .form-replace-card {
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        min-height: 100%;
+        margin-bottom: 100px;
+  
+          
+          .form-replace-card .form-replace-sum-article {
+              font-size: 0.9em;
+          }
+  
+          .form-replace-sum-article p {
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+          }
+  
+          .form-replace-card .form-replace-sum-article .form-replace-read {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #FDD017;
+              color: black;
+              border-radius: 7px;
+          }
+      }
+
+}
+
+  
+@media only all and (max-width: 320px) {
+    .form-replace-card {
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        min-height: 100%;
+        margin-bottom: 20px;
+          .form-replace-sum-article p {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+          }
+    }
+
+    .form-replace-card .form-replace-sum-article .form-replace-read {
+        display: inline-block;
+        padding: 10px;
+        background-color: #FDD017;
+        color: black;
+        border-radius: 7px;
+        margin-top: 5px;
+      }
+}
+
+
+
+
+// .bf-error,
+// .bf-success{
+//     @include flex_column;
+//     padding: 20px 35px;
+//     position: fixed;
+//     top: 20px;
+//     left: 40px;
+//     border-radius: calc($radius * 2);
+//     transform: translateX(-120%);
+//     transition: .4s ease-in;
+// }
+
+// .bf-success-js{
+//     transform: initial;
+// }
+
+// .bf-success{
+//     background-color: #00FF00;
+//     // background-color: $accent;
+//     color: black;
+// }
+
+// .bf-error {
+//     background-color: red;
+//     color: black;
+// }
+
+// .bf-error-js{
+//     transform: initial;
+// }
+
+@media only all and (max-width:1000px){
+    #form{
+        width: 50%;
+    }
+}
+
+@media only all and (max-width:935px){
+    .form#md-form-modify{
+        width: 70%;
+    }
+}
+@media only all and (max-width:820px){
+    #form{
+        width: 60%;
+    }
+}
+
+@media only all and (max-width:680px){
+    #form{
+        width: 70%;
+    }
+}
+
+@media only all and (max-width:580px){
+    #form{
+        width: 80%;
+    }
+}
+
+@media only all and (max-width:425px){
+    body{
+        background-color: $bgb;
+    }
+
+    #form{
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        padding: $padding_box;
+        margin: 0;
+    }
+    .form#md-form-modify{
+        border: 1px solid $accent;
+        width: 80%;
+    }
+}
+
+@media only all and (max-width:390px){
+    .bf-backend-message{
+        position: fixed;
+        height: 70px;
+        width: 100vw;
+        background-color: $accent;
+        color: $bgb;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        @include flex_column;
+    }
+
+    .bf-backend-message-js{
+        display: block;
+        transform: translateY(-110%);
+        transition: .4s ease-out;
+    }
+
+    .form#md-form-modify{
+        border: 1px solid $accent;
+        width: 90%;
+    }
+}

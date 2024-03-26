@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="From the database">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>
+        Modifier vos données
+    </title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'management/css/base_form.css' %}">
+    <!-- Importmap for modules -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js script -->
+    <script type="module" src="{% static 'management/js/base_form.js' %}" defer></script>
+
+</head>
+<body>
+
+    <a href="{% url 'extra:homepage' %}" id="bf-back">
+        <!-- id="bf-circle-icon" -->
+        <span class="fa-solid fa-arrow-left"></span>
+    </a>
+
+    <div class="form" id="md-form-modify">
+       <ul class="md-topMenu">
+            <li class="md-username md-btn active-js" form-id="username">Pseudo</li>
+            <li class="md-email md-btn" form-id="email">E-Mail</li>
+            <li class="md-password md-btn" form-id="password">Password</li>
+       </ul>
+
+       <div class="md-inputs">
+
+            <form action="{% url 'management:update-username'  %}" method="POST" id="username" class="username block active-js">
+                {% csrf_token %}
+                <div class="bf-wrapper">
+                    <div class="bf-input-box">
+                        <label for="username-input">Pseudo</label>
+                        <input type="text" name="username" id="username-input" class="username" placeholder="Nouveau nom utilisateur"  autocomplete="off" autofill="off" autocapitalize="words" maxlength="16">
+                    </div>
+        
+                    <div class="bf-input-box">
+                        <label for="password-for-name">Mot de passe</label>
+                        <input type="password" name="password" id="password-for-name" class="password" placeholder="Mot de passe" autocomplete="off" autofill="off" maxlength="12">
+                    </div>
+                </div>
+                <button type="submit" class="bf-submit-btn">Soumettre</button>
+            </form>
+
+            <form action="{% url 'management:update-user-email' %}" method="POST" id="email" class="email block">
+                {% csrf_token %}
+               <div class="bf-wrapper">
+                    <div class="bf-input-box">
+                        <label for="email-input">E-mail</label>
+                        <input type="email" name="email" id="email-input" class="email" placeholder="Nouvelle adresse e-mail" autocomplete="off" autofill="off">
+                    </div>
+
+                    <div class="bf-input-box">
+                        <label for="password-for-email">Mot de passe</label>
+                        <input type="password" name="password" id="password-for-email" class="password" placeholder="Mot de passe" autocomplete="off" autofill="off" maxlength="12">
+                    </div>
+               </div>
+                <button type="submit" class="bf-submit-btn">Soumettre</button>
+            </form>
+
+            <form action="{% url 'management:update-user-password' %}" method="POST" id="password" class="password block">
+                {% csrf_token %}
+                <div class="bf-wrapper">
+                    <div class="bf-input-box">
+                        <label for="password-for-password">Mot de passe</label>
+                        <input type="password" name="password1" id="password-for-password" class="password" placeholder="Ancien mot de passe" autocomplete="off" autofill="off" maxlength="12">
+                    </div>
+        
+                    <div class="bf-input-box">
+                        <label for="password">Mot de passe 2</label>
+                        <input type="password" name="password2" id="password2" class="password" placeholder="Nouveau mot de passe" autocomplete="off" autofill="off" maxlength="12">
+                    </div>
+                </div>
+                <button class="bf-submit-btn">Soumettre</button>
+            </form>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="md-messages">
+            {% for message in messages %}
+                <p> {{ message }} </p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% include 'modal.html' %}
+    
+    <noscript>
+       {% include 'jsDisabled.html' %}
+    </noscript>
+</body>
+</html>

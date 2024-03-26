@@ -1,0 +1,183 @@
+::-moz-selection {
+  color: black;
+  background-color: rgba(253, 208, 23, 0.5);
+}
+
+::selection {
+  color: black;
+  background-color: rgba(253, 208, 23, 0.5);
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.ls-content {
+  min-height: calc(100vh - 80px);
+  padding: 10px 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.ls-content .ls-search-form {
+  transition: 0.4s ease-out;
+  width: 100%;
+  display: none;
+}
+.ls-content .ls-search-form .ls-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  flex-wrap: nowrap;
+  border: 2px solid #090A0C;
+  box-shadow: 1px 1px 11px 1px #090A0C;
+}
+.ls-content .ls-search-form .ls-wrapper input, .ls-content .ls-search-form .ls-wrapper button {
+  height: 40px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+.ls-content .ls-search-form .ls-wrapper input {
+  width: 100%;
+  font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.ls-content .ls-search-form .ls-wrapper input::-webkit-search-cancel-button {
+  display: none;
+}
+.ls-content .ls-search-form .ls-wrapper input::-webkit-input-placeholder {
+  color: #090A0C;
+}
+.ls-content .ls-search-form .ls-wrapper button {
+  background-color: #090A0C;
+  color: #FDD017;
+  cursor: pointer;
+}
+.ls-content .ls-search-form-js {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  top: 80px;
+  width: 80%;
+  margin: 10px auto;
+  left: 0;
+  right: 0;
+  border: none;
+}
+.ls-content .ls-big-title {
+  font-size: 3rem;
+  margin-top: 1rem;
+}
+.ls-content .ls-subjects-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+.ls-content .ls-subjects-list a {
+  display: inline-block;
+  color: #090A0C;
+  background-color: #F7FAFB;
+  padding: 20px;
+  width: 100%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.ls-content .ls-subjects-list a:hover {
+  background-color: #090A0C;
+  color: #FDD017;
+}
+.ls-content .ls-subjects-list a li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.ls-content .ls-mobile-search {
+  display: none;
+}
+
+@media only all and (max-width: 480px) {
+  .ls-topbar-search {
+    display: none;
+  }
+  .ls-content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .ls-content .ls-search-form {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    top: 80px;
+    width: 80%;
+    margin: 10px auto;
+    left: 0;
+    right: 0;
+    transform: translateX(120%);
+    border: none;
+  }
+  .ls-content .ls-search-form .ls-wrapper {
+    border: none;
+  }
+  .ls-content .ls-search-form-js {
+    transform: initial;
+  }
+  .ls-content .ls-big-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  .ls-content .ls-subjects-list a {
+    position: relative;
+  }
+  .ls-content .ls-subjects-list .ls-icon {
+    position: absolute;
+    left: -3px;
+    top: -3px;
+  }
+  .ls-content .ls-subjects-list .ls-li-right {
+    display: none;
+  }
+  .ls-content .ls-mobile-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    padding: 10px 20px;
+    border-radius: 5px 5px 0 0;
+    background-color: #FDD017;
+    color: #090A0C;
+    font-size: 1.1em;
+  }
+}/*# sourceMappingURL=list_subjects.css.map */

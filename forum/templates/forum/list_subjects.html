@@ -1,0 +1,130 @@
+{% extends 'forum/base_forum.html' %}
+{% load static %}
+
+{% block docTitle %} Tous nos forums {% endblock docTitle%}
+
+{% block customCSS%}
+    <link rel="stylesheet" href="{% static 'forum/css/list_subjects.css' %}">
+{% endblock customCSS %}
+
+{% block customJS%}
+    <script type="module" src="{% static 'forum/js/list_subjects.js' %}" defer></script>
+{% endblock customJS%}
+
+{% block moreInTopbar %}
+    <div id="filter_value">
+        <span class="bfr-default">
+            <span class="bfr-value">Filtrer</span>
+            <span class="fa-solid fa-angle-right bfr-down"></span>
+        </span>
+
+        <ul class="bfr-options">
+            <li>Tout</li>
+            <li>Littérature</li>
+            <li>Hobbies</li>
+            <li>Opinions</li>
+            <li>Coding</li>
+        </ul>
+    </div>
+
+    <div class="ls-search-icon ls-topbar-search">
+        <span class="fa-solid fa-search bfr-topbar-icon"></span>
+    </div>
+{% endblock %}
+
+{% block content%}
+    <div class="ls-content">
+        <form action="" method="GET" class="ls-search-form">
+            <div class="ls-wrapper">
+                <input type="search" name="search-input" id="ls-search-input" autocomplete="off" autocapitalize="sentences" placeholder="Tapez votre recherche ici...">
+                <button class="ls-submit-btn" type="submit">
+                    <span class="fa-solid fa-search"></span>
+                </button>
+            </div>
+        </form>
+
+        <div class="ls-forums">
+            <h3 class="ls-big-title">Nos Forums</h3>
+            <ul class="ls-subjects-list">
+                <a href="#">
+                    <li>
+                        <span class="ls-li-left">
+                            <span class="fa-solid fa-comments ls-icon"></span>
+                            <span class="ls-text">L'époque Mobutu est la meilleure : nostalgie.</span>
+                        </span>
+
+                        <span class="ls-li-right">
+                            <span class="fa-solid fa-tag"></span>
+                            <span class="ls-category">Opinions</span>
+                        </span>
+                        
+                    </li>
+                </a>
+
+                <a href="#">
+                    <li>
+                        <span class="ls-li-left">
+                            <span class="fa-solid fa-comments ls-icon"></span>
+                            <span class="ls-text">L'époque Mobutu est la meilleure : nostalgie.</span>
+                        </span>
+
+                        <span class="ls-li-right">
+                            <span class="fa-solid fa-tag"></span>
+                            <span class="ls-category">Opinions</span>
+                        </span>
+                        
+                    </li>
+                </a>
+
+                <a href="#">
+                    <li>
+                        <span class="ls-li-left">
+                            <span class="fa-solid fa-comments ls-icon"></span>
+                            <span class="ls-text">L'époque Mobutu est la meilleure : nostalgie.</span>
+                        </span>
+
+                        <span class="ls-li-right">
+                            <span class="fa-solid fa-tag"></span>
+                            <span class="ls-category">Opinions</span>
+                        </span>
+                        
+                    </li>
+                </a>
+
+                <a href="#">
+                    <li>
+                        <span class="ls-li-left">
+                            <span class="fa-solid fa-comments ls-icon"></span>
+                            <span class="ls-text">L'époque Mobutu est la meilleure : nostalgie.</span>
+                        </span>
+
+                        <span class="ls-li-right">
+                            <span class="fa-solid fa-tag"></span>
+                            <span class="ls-category">Opinions</span>
+                        </span>
+                        
+                    </li>
+                </a>
+
+                <a href="#">
+                    <li>
+                        <span class="ls-li-left">
+                            <span class="fa-solid fa-comments ls-icon"></span>
+                            <span class="ls-text">L'époque Mobutu est la meilleure : nostalgie.</span>
+                        </span>
+
+                        <span class="ls-li-right">
+                            <span class="fa-solid fa-tag"></span>
+                            <span class="ls-category">Opinions</span>
+                        </span>
+                        
+                    </li>
+                </a>
+            </ul>
+        </div>
+        
+        <button class="ls-search-icon ls-mobile-search">
+            <span class="fa-solid fa-search"></span>
+        </button>
+    </div>
+{% endblock content %}

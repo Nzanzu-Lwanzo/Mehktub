@@ -1,0 +1,86 @@
+{% load static %}
+{% load custom-filters %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Form page for CRUD operations">
+        <meta name="keywords" content="administration panel, management,CRUD">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+        <title>
+            {% block documentTitle %}
+                Form|{{ action }}|{{ table }}
+            {% endblock %}
+        </title>
+
+
+        <!-- INCLUDE ICONS  -->
+        <!-- INCLUDE FONTS -->
+        {% include 'icons-n-fonts.html' %}
+        <!-- END INCLUDE ICONS  -->
+        <!-- END INCLUDE FONTS -->
+
+        <!-- RICHTEXT EDITOR FILES -->
+        {{ form.media }}
+        <!-- END RICHTEXT EDITOR FILES -->
+        
+        <!-- Custom stylesheet -->
+        <link rel="stylesheet" href="{% static 'administration/css/crud-form.css' %}">
+        <!-- Custom importmap -->
+        {% include 'importMapJs.html' %}
+        <!-- Custom js files -->
+    </head>
+
+    <body>
+
+        <header class="cf-header">
+            <h1>
+                <span>{{ action }}</span>
+                <span>{{ table }}</span>
+            </h1>
+
+            <ul class="ap-links">
+                <a href="{{ panel }}" class="cf-round-btn">
+                    Panel
+                </a>
+                <a href="{% url 'extra:homepage' %}" class="cf-circle-btn">
+                    <li>
+                        <span class="fa-solid fa-home"></span>
+                    </li>
+                </a>
+            </ul>
+        </header>
+
+
+        <form action="{{ url }}" method="POST" class="cf-form" id="cf-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="cf-wrapper">
+                {{ form }}
+            </div>
+            <button type="submit">Soumettre</button>
+        </form>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="gen-message {{ message.extra_tags }}">
+                    <p>
+                        {{ message }}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <script>
+            
+            const message = document.querySelector('.gen-message');
+
+            if (message){
+                setTimeout(()=>{
+                    message.classList.add('gen-message-js');
+                },2000)
+            }
+        </script>
+        
+    </body>
+</html>

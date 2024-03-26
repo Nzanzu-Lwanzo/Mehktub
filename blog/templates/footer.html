@@ -1,0 +1,159 @@
+{% load custom-filters %}
+<footer class="da-footer">
+    <ul class="da-links da-a">
+        <span class="da-title">Actions</span>
+        {% if request.user.is_authenticated %}
+            <li><a href="{% url 'management:logUserOut' %}">Se déconnecter</a></li>
+        {% else %}
+            <li><a href="{% url 'management:logUserIn' %}">Se connecter</a></li>
+        {% endif %}
+
+        {% if request.user.is_active %}
+            <li><a href="{% url 'management:unactiveAccount' %}">Se désabonner</a></li>
+            <li><a href="{% url 'management:modify-user-data' %}">Modifier ses données</a></li>
+        {% endif %}
+        
+        {% if not user.is_active or user.is_anonymous %}
+            <li><a href="{% url 'management:signUserUp' %}">S'abonner</a></li>
+        {% endif %}
+    </ul>
+
+    <ul class="da-links da-b" id="rubriques">
+        <span class="da-title">Rubriques</span>
+        {% for category in categories %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <div class="da-links da-c">
+        <span class="da-title">Sur ce blog</span>
+        <span class="da-text">Développé par <em class="da-emphasize">NZANZU MUHAYRWA L.</em></span>
+        <a href="mailto:nzanzu.lwanzo.work@gmail.com" class="da-text">nzanzu.lwanzo.work@gmail.com</a>
+        <a href="tel:+243977210519" class="da-text">+243-977-210-519</a>
+        <span class="da-text">Hébergé par <em class="da-emphasize">Hostman</em></span>
+    </div>
+</footer>
+
+<style>
+    .da-footer {
+    min-height: 250px;
+    background-color: #090A0C;
+    padding: 40px 3rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+    .da-footer .da-links {
+    list-style-type: none;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    gap: 10px;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+    .da-footer .da-links .da-title {
+    color: #FDD017;
+    font-size: 1.3rem;
+    }
+    .da-footer .da-links a {
+    color: white;
+    font-size: 1.1rem;
+    }
+    .da-footer .da-links a:hover, .da-footer .da-links a:focus {
+    color: #FDD017;
+    }
+    .da-footer .da-links .da-text {
+    color: white;
+    }
+    .da-footer .da-links .da-emphasize {
+    font-style: normal;
+    color: #FDD017;
+    }
+    .da-footer .da-links a.da-text {
+    font-style: oblique;
+    }
+
+
+    
+    @media only all and (max-width: 700px) {
+        .da-footer {
+            display: -ms-grid;
+            display: grid;
+                grid-template-areas: "a b" "c d";
+            row-gap: 20px;
+        }
+        .da-footer .da-a {
+            grid-area: a;
+        }
+        .da-footer .da-b {
+            grid-area: b;
+        }
+        .da-footer .da-c {
+            grid-area: c;
+        }
+    }
+
+
+    
+    @media only all and (max-width: 700px) {
+        .da-footer .da-a {
+        -ms-grid-row: 1;
+        -ms-grid-column: 1;
+        }
+        .da-footer .da-b {
+        -ms-grid-row: 1;
+        -ms-grid-column: 2;
+        }
+        .da-footer .da-c {
+        -ms-grid-row: 3;
+        -ms-grid-column: 1;
+        }
+}
+
+    @media only all and (max-width: 425px){
+        .da-footer {
+            display: -ms-grid;
+            display: grid;
+                grid-template-areas: "a" "b" "c";
+            row-gap: 20px;
+        }
+        .da-footer .da-a {
+        -ms-grid-row: 1;
+        -ms-grid-column: 1;
+        }
+        .da-footer .da-b {
+        -ms-grid-row: 3;
+        -ms-grid-column: 1;
+        }
+        .da-footer .da-c {
+        -ms-grid-row: 5;
+        -ms-grid-column: 1;
+        }
+    }
+</style>

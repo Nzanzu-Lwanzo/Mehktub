@@ -1,0 +1,75 @@
+{% extends 'administration/admin-panel.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    ADMIN|Messages
+{% endblock %}
+
+{% block content %}
+
+<div class="dash-messages-section" id="dash-messages-section">
+    <div class="dash-top-section">
+        <h2 class="dash-end-section">Messages</h2>
+
+        <ul>
+            <span class="dash-section-top-btn dash-counter">
+                <li id="dash-count-messages">
+                    {{ numberOfRessource }}
+                </li>
+            </span>
+            
+            <a href="{% url 'site-admin:delete-all-message' %}" class="dash-section-top-btn">
+                <li>
+                    DeleteAll
+                </li>
+            </a>
+
+            <a href="#" class="dash-section-top-btn">
+                <li>
+                    WriteInFile
+                </li>
+            </a>
+        </ul>
+    </div>
+
+    <ul class="dash-list-messages">
+        {% csrf_token %}
+        {% for message in allData %}
+            <li  id="card-message-{{message.id}}">
+                <div class="dash-left">
+                    <p class="dash-text">
+                        {{ message.content}}
+                    </p>
+                    <p>
+                        Message de <span class="dash-whoSaid">{{ message.sender }}</span>
+                    </p>
+                    <p>
+                        Envoyé le <span class="dash-whoSaid">{{ message.sendDate }}</span>
+                    </p>
+                    <p>
+                        Pour Motif : <span class="dash-whoSaid">{{ message.motive }}</span>
+                    </p>
+                    <p>
+                        Téléphone <span class="dash-whoSaid">{{ message.phone }}</span>
+                    </p>
+                    <p>
+                        E-mail <span class="dash-whoSaid">{{ message.email }}</span>
+                    </p>
+                </div>
+               <div class="dash-right">
+                    <a href="{% url 'site-admin:delete-message' message.id %}" class="fa-solid fa-trash dash-delete dash-delete-message" data-id="message-{{message.id}}"></a>
+
+                    {% if not message.read %}
+                        <div class="dash-check" id="message-{{message.id}}">
+                            <span class="dash-circle"></span>
+                            <input type="checkbox" class="checker checker-for-request" data-id="message-{{message.id}}" data-linkToMessage="{% url 'site-admin:mark-as-read' message.id %}">
+                        </div>
+                    {%endif %}
+               </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% include 'paginator.html'  %}
+</div>
+
+{% endblock content %}

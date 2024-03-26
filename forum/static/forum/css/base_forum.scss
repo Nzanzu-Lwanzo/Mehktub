@@ -1,0 +1,307 @@
+// LES VARIABLES
+$bgw : #F7FAFB;
+$bgb : #090A0C;
+$fg: black;
+$bgb_2:#333;
+$accent:#FDD017;
+$title:Title;
+$text:Text;
+$font:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$radius:5px;
+$topbar_height:80px;
+$padding_box:10px 3rem;
+$sidebar:50vw;
+$sdb_show_duration:.4s;
+$success:#00FF00;
+$profile_sidebar:30vw;
+
+// LES MIXINS
+@mixin flex_row(
+    $alit:center,
+    $jusco:space-between,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: row;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin flex_column(
+    $alit:center,
+    $jusco:center,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: column;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin grid_col(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-columns: $div;
+    gap: $gap;
+}
+
+@mixin grid_row(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-rows: $div;
+    gap: $gap;
+}
+
+
+// LE STYLE GENERAL
+
+::-moz-selection {
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+::selection{
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+.bfr-btn-link{
+    display: inline-block;
+    background-color: $accent;
+    color: $bgb;
+    padding: 10px 25px;
+    text-align: center;
+    border-radius: $radius;
+    margin-top: 10px;
+}
+
+
+*{
+    box-sizing: border-box;border: none;outline: none;
+    padding: 0;margin: 0;text-decoration: none;list-style-type: none;
+}
+
+body{
+    font-family: $text,$font;
+    min-height: 100vh;
+}
+
+.bfr-topbar{
+    height: $topbar_height;
+    background-color: $bgb;
+    color: white;
+    @include flex_row($jusco:space-around);
+    padding: 40px;
+    position: fixed;left:0;right:0;top:0;
+    z-index: 2;
+
+    .bfr-left{
+        @include flex_row($gap:20px);
+
+        #filter_value,
+        .bfr-topbar-icon {
+            border: 2px solid $accent;
+            padding: .2em .7em;
+            height: 48px;
+        }
+
+        .bfr-topbar-icon {
+            border-radius: 50%;
+            width: 48px;
+            @include flex_column;
+        }
+
+        
+        .bfr-profileBox{
+            border-color: $success !important;
+        }
+
+
+        #filter_value{
+            @include flex_column($alit:stretch);
+            width: 132px;
+            border-radius: 25px;
+            position: relative;
+
+
+            .bfr-default{
+                @include flex_row($alit:center);
+                font-size: 1.1rem;
+
+                .bfr-down{
+                    transform: translateY(1px);
+                }
+            }
+
+            .bfr-options{
+                position: absolute;
+                background-color: $bgb;
+                top: 62px;
+                left: -25px;
+                width: 200px;
+                display: none;
+                overflow: hidden;
+                color: white;
+
+                li{
+                    padding: 10px 20px;
+                    cursor: pointer;
+
+                    &:hover,
+                    &:focus{
+                        background-color: $accent;
+                        color: black;
+                    }
+                }
+            }
+
+            .bfr-options-js {
+                display: block;
+            }
+        }
+    }
+
+    .bfr-site-name{
+        font-size: 3rem;
+    }
+
+    .bfr-topbar-icon{
+        @include flex_row($jusco:flex-end,$gap:5px);
+        transition: .4s;
+        cursor: pointer;
+
+        &:hover,
+        &:focus{
+            background-color: $accent;
+            color: $bgb;
+            border-color: $bgb;
+        }
+    }
+}
+
+.bfr-profile{
+    background-color: $accent;
+    padding: $padding_box;
+    padding-top: 50px;
+    color: black;
+    position: fixed;
+    z-index: 3;
+    overflow: hidden;
+    top: 0;bottom:0;left:0;
+    width: $profile_sidebar;
+    transform: translateX(-100%);
+    transition: .5s ease-out;
+
+    .bfr-img{
+        position: relative;
+        img{
+            border-radius: $radius;
+        }
+
+        .bfr-changeImage{
+            position: absolute;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,.6);
+            color: white;
+            font-size: 1.2rem;
+            @include flex_column;
+            bottom: -15px;
+            right: 20px;
+            cursor: pointer;
+            transition: .5s;
+    
+            &:hover{
+                transform: rotate(360deg);
+            }
+        }
+
+        .fileChooser{
+            display: none;
+        }
+
+    }
+   
+    .bfr-identity {
+        padding: 10px;
+        margin-top: 20px;
+        border-top: .5px solid $bgb;
+        @include flex_column($alit:flex-start);
+
+        .bfr-name,
+        .bfr-email,
+        .bfr-statut,
+        .bfr-stat {
+            font-size: 1.2rem;
+        }
+
+        .bfr-important{
+            font-weight: bold;
+        }
+    }
+}
+
+.bfr-profile-js{
+    transform: translate(0);
+}
+
+.bfr-content{
+    min-height: 100vh;
+    margin-top: $topbar_height;
+}
+
+
+// MEDIA QUERIES
+@media only all and (max-width:1150px){
+    $profile_sidebar:40vw;
+
+    .bfr-profile{
+        width: $profile_sidebar;
+    }
+}
+
+@media only all and (max-width:800px){
+    $profile_sidebar:60vw;
+
+    .bfr-profile{
+        width: $profile_sidebar;
+    }
+}
+
+@media only all and (max-width:633px){
+    .bfr-topbar {
+        .bfr-topbar{
+            justify-content: space-between;
+        }
+        .bfr-site-name{
+            display: none;
+        }
+    }
+}
+
+@media only all and (max-width:425px){
+    $profile_sidebar:100vw;
+
+    .bfr-profile{
+        width: $profile_sidebar;
+        top: $topbar_height;
+    }
+}
+
+

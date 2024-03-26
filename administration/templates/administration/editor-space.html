@@ -1,0 +1,18 @@
+{% extends 'management/base_listing.html' %}
+{% load custom-filters %}
+
+{% block pageTitle %}
+    SPACE|{{ user.username|formatUserName }}
+{% endblock %}
+
+{% block bigTitle %}
+    {{ author|formatUserName }}
+{% endblock %}
+
+{% block whatContent %}
+    {% if user|canEdit:articles.last %}
+        Vos articles
+    {% else %}
+        Articles
+    {% endif %}
+{% endblock %}

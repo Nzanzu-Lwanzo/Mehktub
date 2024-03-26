@@ -1,0 +1,311 @@
+{% load static %}
+{% load custom-filters %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="{{ article.sumItUp }}">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+    <title>{{ article.title }}</title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+    
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'post/css/display_article.css' %}">
+    <!-- Custom importmap -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js files -->
+    <script type="module" src="{% static 'post/js/display_article.js' %}" defer></script>
+</head>
+<body data-article="{{ article.id }}" data-currentSession="{{request.user.id}}">
+    <header class="da-header">
+        <div class="da-topbar" id="da-topbar">
+            {% if article.online %}
+                <span class="da-siteName">Mehktub</span>
+            {% else %}
+                <span class="da-siteName" style="color: red;">Mehktub</span>
+            {% endif %}
+
+            <nav class="da-links">
+                <ul>
+                    <li><a href="{% url 'extra:homepage'  %}" class="da-main-link">Accueil</a></li>
+                    <li><a href="#contacts" class="da-main-link da-contact">Contacts</a></li>
+                    {% if user|canEdit:article %}
+                        <li class="hide-on-computer">
+                            <a href="{% url 'site-admin:update-article' article.slug article.id %}" class="da-main-link">
+                                <span class="fa-solid fa-edit"></span>
+                                <span>Mettre article à jour</span>
+                            </a>
+                        </li>
+
+                        <li class="hide-on-computer">
+                            <a href="{% url 'site-admin:editor-space'%}" class="da-main-link">
+                                <span class="fa-solid fa-dashboard"></span>
+                                <span>Espace Rédacteur</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="da-contains-topics da-link-with-icon">
+                        <div class="da-el">
+                            <span>Catégories</span>
+                            <span class="fa-solid fa-chevron-down da-down"></span>
+                        </div>
+                        
+                        <ul class="da-topics-list da-topic-list-js">
+                            {% for category in categories %}
+                                <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="da-icons">
+                <button class="da-icon da-search">
+                    <span class="fa-solid fa-search"></span>
+                </button>
+                {% if user|canEdit:article %}
+                    <a href="{% url 'site-admin:editor-space' %}" class="da-icon hide-on-mobile">
+                        <span class="fa-solid fa-dashboard"></span>
+                    </a>
+                    <a href="{% url 'site-admin:update-article' article.slug article.id %}" class="da-icon hide-on-mobile">
+                        <span class="fa-solid fa-edit"></span>
+                    </a>
+                {% elif user.is_superuser %}
+
+                {% endif %}
+                <button class="da-icon da-menu da-menu-icon">
+                    <!-- <span class="da-menu fa-solid fa-bars"></span> -->
+                    <div class="da-bars">
+                        <div class="bar first"></div>
+                        <div class="bar second"></div>
+                        <div class="bar third"></div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div class="da-main-title">
+            <h1>{{ article.title }}</h1>
+            
+            <span class="da-topic">
+                <span class="fa-solid fa-tags"></span>
+                <span>{{ article.category.title }}</span>
+            </span>
+        </div>
+    </header>
+
+    <section class="da-content">
+
+        <div class="da-article">
+            <!-- COURTE INTRODUCTION -->
+            <h2 id="da-introduction">{{ article.sumItUp }}</h2>
+            <!-- INFOS SUR L'ARTICLE -->
+            <div class="da-dos">
+                <a href="{% url 'site-admin:same-author-articles' article.author.id %}" class="da-el da-el-link">
+                    <span class="fa-solid fa-user"></span>
+                    <span>
+                        {% if article.author %}
+                            {{ article.author.username|formatUserName }}
+                        {% else %}
+                            Compte supprimé
+                        {% endif %}
+                    </span>
+                    <span class="fa-solid fa-external-link"></span>
+                </a>
+                <a  href="{{ article.category.get_absolute_url }}"  class="da-el da-el-link">
+                    <span class="fa-solid fa-tags da-tag"></span>
+                    <span class="da-tag">{{ article.category.title }}</span>
+                    <span class="fa-solid fa-external-link"></span>
+                </a>
+                <span class="da-el da-el-meta-infos">
+                    <span class="fa-solid fa-pencil"></span>
+                    <span class="">Mis à jour le {{ article.updateDate }}</span>
+                </span>
+                <!-- <span>
+                    <span class="fa-solid fa-pencil"></span>
+                    <span class="">Mis à jour le {{ article.updateDate }}</span>
+                </span> -->
+            </div>
+            <!-- IMAGE PRINCIPALE DE L'ARTICLE -->
+            <div class="da-main-img">
+                <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}" class="da-principal-img">
+                <p class="da-description">
+                    <span>Source : </span>
+                    <em id="da-source"> {{ article.imageAuthor}} </em>/
+                    <span>Description :</span>
+                    <em id="da-imageAlt">
+                        {{ article.imageAlt}}
+                    </em>
+                </p>
+            </div>
+
+            <!-- CONTENU DE L'ARTICLE -->
+            {{ article.content|safe }}
+            
+        </div>
+    </section>
+
+    <section class="da-comment-box">
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'post:comment-article' %}" id="da-comment-form" method="POST" data-articleId="{{ article.id }}" data-userID="{{ request.user.id }}">
+            {% csrf_token %}
+            <div class="da-wrapper">
+                <span class="da-message" style="color:red;">
+                    <span id="da-error-message"></span>
+                </span>
+
+                <div class="da-textarea">
+                    <textarea name="content" id="comment" placeholder="Maximum 216 charactères par commentaire, emojis supportés." maxlength="216" required></textarea>
+                    <span class="fa-solid fa-check da-success"></span>
+                    <span class="fa-solid fa-close da-failure"></span>
+                </div>
+
+                <button class="da-submit da-btn" id="da-submit" type="submit">
+                    <span>Commenter</span>
+                    <span class="fa-solid fa-comment"></span>
+                </button> 
+                <!-- PASSER DES DONNEES AU BACKEND -->
+                <input type="hidden" name="whoPost" value="{{ request.user.username }}" data-commentorID="{{request.user.id}}" data-article="{{ article.id }}" id="trackForComment">
+                <input type="hidden" value="{{ article.id }}" name="articleIdForBackend" data-info="notForJavaScript">
+            </div>
+        </form>
+        {% endif %}
+
+        <div id="da-share">
+            <span>Partager sur</span>
+            <span class="fa-solid fa-long-arrow-right"></span>
+            <span class="fa-brands fa-facebook"></span>
+            <span class="fa-brands fa-whatsapp"></span>
+            <span class="fa-brands fa-instagram"></span>
+            <span class="fa-brands fa-twitter"></span>
+        </div>
+    </section>
+
+    <div id="da-comments-container">
+    <section class="da-comments-section">
+        <div class="da-comments" id="da-comments">
+            {% if comments %}
+            {% for comment in comments %}
+                <div class="da-comment"  id="comment-{{comment.id }}">
+                    <form class="da-icons" method="DELETE">
+                        {% csrf_token %}
+                        {% if request.user.id == comment.whoPost.id %}
+                            <span class="fa-solid fa-comment da-green"></span>
+                        {% else %}
+                            <span class="fa-solid fa-comment"></span>
+                        {% endif %}
+                        {% if request.user.id == comment.whoPost.id or request.user.is_superuser %}
+                            <a href="{{ comment.delete_comment }}" class="fa-solid fa-trash da-delete" data-forDeleting="comment-{{ comment.id }}"></a>
+                        {% endif %}
+                    </form>
+                    <div class="da-text">
+                        <p>
+                            {{comment.content}}
+                        </p>
+                        
+                        {% if request.user.id == comment.whoPost.id %}
+                            <span class="da-commentor da-green">{{ comment.whoPost|formatUserName }}</span>
+                        {% else %}
+                            <span class="da-commentor">{{ comment.whoPost|formatUserName }}</span>
+                        {% endif %}
+                        <span class="da-date">{{ comment.postDate }}</span>
+                    </div>                 
+                </div>  
+            {% endfor %} 
+            {% else %}
+                <div class="da-comment" id="gen-placeholder">
+                    <span class="fa-solid fa-comment"></span>
+                    <div class="da-text">
+                        <p>
+                            Merci d'avoir pris la peine de lire mon article jusqu'à la fin ! Faites-vous l'honneur d'écrire le premier commentaire et d'aimer l'article.
+                        </p>
+
+                            <span class="da-commentor">{{ article.author.username|formatUserName }}</span>
+                            <span class="da-date">{{ article.updateDate }}</span>
+                    </div>                 
+                </div>  
+                <!-- <p ">Aucun commentaire pour l'instant ...</p> -->
+            {% endif %}
+        </div>
+    </section>
+    </div>
+
+    {% if moreArticles %}
+    <section class="da-more-section">
+        <p class="da-section-title">Vous pourriez aimer</p>
+        <div class="da-more">
+            {% for article in moreArticles %}
+                <div class="da-card">
+                    <div class="da-card-img">
+                        <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+                        <span class="gen-hashtags">
+                            {% for hashtag in article.hashtags.all %}
+                                <span class="gen-hashtag">#{{hashtag}}</span>
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <div class="da-sum-article">
+                        <h3>{{ article.title }}</h3>
+                        <p>
+                            {{ article.sumItUp}}
+                        </p>
+                        <span class="da-date">{{ article.updateDate}}</span>
+                        <span class="da-author-p">
+                            Auteur : 
+                            <span class="da-author">
+                                {% if article.author %}
+                                    {{ article.author.username|formatUserName }}
+                                {% else %}
+                                    Compte supprimé
+                                {% endif %}
+                            </span>
+                        </span>
+                        <a href="{{ article.get_absolute_url }}" class="da-read">Lire</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- ABOUT ME SECTION -->
+    {% include 'aboutMe.html' %}
+    <!-- END ABOUT ME SECTION -->
+
+    <!-- SOCIAL MEDIAS SECTION -->
+    {% include 'social.html' %}
+    <!-- END MEDIAS SECTION -->
+
+    <!-- FOOTER SECTION -->
+    {% include 'footer.html' %}
+    <!-- END FOOTER SECTION -->
+
+    <!-- FIXED ELEMENTS -->
+    {% include 'post/search_form.html' %}
+    <!-- <div class="da-blur-for-form"></div> -->
+
+    <!-- BACK TO TOP -->
+    {% include 'backToTop.html' %}
+    <!-- END BACK TO TOP -->
+
+    <!-- LES CARTES MODALES -->
+    {% include 'modal.html' %}
+    <!-- LES CARTES MODALES -->
+
+    <!-- BOUTTON LIKE -->
+    {% if not hasLiked %}
+        <a href="{% url 'post:like-article' article.id %}" id="da-like-btn" class="da-like-btn">
+            {% csrf_token %}
+            <span class="fa-solid fa-thumbs-up"></span>
+        </a>
+    {% endif %}
+
+</body>
+</html>

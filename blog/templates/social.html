@@ -1,0 +1,89 @@
+
+<section class="hm-social-media">
+    <span class="hm-title">Suivez nos réseaux sociaux</span>
+
+    <div class="hm-container">
+        <span class="fa-brands fa-facebook"></span>
+        <span class="fa-brands fa-instagram"></span>
+        <span class="fa-brands fa-twitter"></span>
+        <span class="fa-brands fa-whatsapp"></span>
+    </div>
+</section>
+
+<style>
+  .hm-social-media .hm-title{
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: left;
+    padding: 20px;
+    }
+    .hm-social-media {
+    min-height: 200px;
+    background-color: #333;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    padding: 30px 3rem;
+    }
+    .hm-social-media .hm-title {
+    color: white;
+    text-align: center;
+    }
+    .hm-social-media .hm-container {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 20px 1fr 20px 1fr 20px 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    justify-items: center;
+    }
+    .hm-social-media .hm-container span {
+    font-size: 3rem;
+    color: #FDD017;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    }
+    .hm-social-media .hm-container span:hover {
+    -webkit-transform: scale(1.1) translateY(-3px);
+        -ms-transform: scale(1.1) translateY(-3px);
+            transform: scale(1.1) translateY(-3px);
+    }
+
+    @media only all and (max-width:425px){
+
+        .hm-social-media .hm-title{
+            font-size: 2rem;
+            color: white;
+            padding-top: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .hm-social-media{
+            width: 90%;
+            margin: 20px auto;
+            border-radius: 5px;
+            background-color: #090A0C;
+            padding: 20px;
+        }
+        .hm-social-media .hm-container{
+            gap: 10px;
+        }
+        .hm-social-media .hm-container span {
+            font-size: 2rem;
+        }
+    }
+</style>

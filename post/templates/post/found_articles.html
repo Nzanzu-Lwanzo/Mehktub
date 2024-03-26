@@ -1,0 +1,172 @@
+{% load static %}
+{% load custom-filters %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Liste d'articles en réponse à une recherche effectuée par l'utilisateur">
+    <meta name="keywords" content="From the database">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats pour "{{ query }}"</title>
+
+    <!-- INCLUDE ICONS  -->
+    <!-- INCLUDE FONTS -->
+    {% include 'icons-n-fonts.html' %}
+    <!-- END INCLUDE ICONS  -->
+    <!-- END INCLUDE FONTS -->
+    
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="{% static 'post/css/found_articles.css' %}">
+    <!-- Custom importmap -->
+    {% include 'importMapJs.html' %}
+    <!-- Custom js files -->
+    <script type="module" src="{% static 'post/js/found_articles.js' %}" defer></script>
+</head>
+<body>
+
+    <header class="far-header">
+        <p class="far-page-title">Résultats</p>
+
+        <ul class="far-icons">
+            <li class="far-icon far-search-by-hashtag">
+                <span class="fa-solid fa-hashtag"></span>
+            </li>
+            <li class="far-icon far-search-btn">
+                <span class="fa-solid fa-search"></span>
+            </li>
+            <a href="{% url 'extra:homepage' %}" class="far-icon">
+                <span class="fa-solid fa-home"></span>
+            </a>
+        </ul>
+    </header>
+
+    <section class="far-cards">
+    {% if proposeArticles%}
+    {% csrf_token %}
+    {% for article in proposeArticles %}
+    <div class="far-card" id="deletable-{{article.id}}">
+        <div class="far-img">
+            <span class="far-category">
+                <span class="fa-solid fa-tag"></span>
+                <span>{{ article.category.title }}</span>
+            </span>
+            <img src="{{ article.image.url }}" alt="{{ article.imageAlt }}">
+            <span class="gen-hashtags">
+                {% for hashtag in article.hashtags.all %}
+                    <span class="gen-hashtag">#{{ hashtag }}</span>
+                {% endfor %}
+            </span>
+
+            {% if user.is_authenticated and user|isEditor %}
+                <span class="fa-solid fa-copy gen-copy-link" data-articleLink="{{ article.get_absolute_url }}">
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="far-card-content">
+            <h2>{{ article.title }}</h2>
+            <p>
+               {{ article.sumItUp }}
+            </p>
+            <span class="far-date">
+                {{ article.updateDate|timesince:now }}
+            </span>
+            <span class="far-author-p">
+                Auteur :
+                <a href="{% url 'site-admin:same-author-articles' article.author.id %}" class="far-link-in-card">
+                    {% if article.author %}
+                        {{ article.author.username|formatUserName }}
+                    {% else %}
+                        Compte supprimé
+                    {% endif %}
+                </a>
+            </span>
+            <div class="far-links">
+                {% if request.user.is_authenticated %}
+                    <a href="{{ article.get_absolute_url }}" class="far-read">Lire</a>
+                {% else %}
+                    <a href="{% url 'management:logUserIn' %}" class="far-read">Lire</a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <form action="#" method="DELETE" id="far-management-actions">
+                        {% csrf_token %}
+                        {% if user|canEdit:article %}
+                            <a href="{% url 'site-admin:update-article' article.slug article.id %}" class="far-modify far-btn">
+                                <span class="fa-solid fa-edit"></span>
+                            </a>
+                            {% if article.online %}
+                                <a href="{% url 'post:put-article-outline' article.slug article.id %}" class="far-modify far-btn gen-online far-toggle-io" data-article="{{ article.title }}" data-id="online-{{article.id}}">
+                                    <span class="fa-solid fa-wifi"></span>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'post:put-article-online' article.slug article.id %}" class="far-modify far-btn gen-outline far-toggle-io" data-article="{{ article.title }}" data-id="online-{{article.id}}">
+                                    <span class="fa-solid fa-wifi"></span>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+
+                       
+
+                        {% if user.is_superuser %}
+                            <a href="{{ article.deleteArticle }}" class="far-delete far-btn" data-article="{{ article.title }}" data-id="deletable-{{article.id}}">
+                                <span class="fa-solid fa-trash"></span>
+                            </a>
+                        {% endif %}
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="fr-noresult"> 
+                <p>{{ message}}</p>
+                <button class="far-search-by-hashtag gen-click-here">Cliquez ici pour chercher par hashtag</button>
+            </div>            
+
+        {% endfor %}
+    {% endif %}
+    {% endif %}
+    </section>
+
+    <section class="gen-search-by-hashtag">
+        <div class="gen-card">
+            <span class="gen-closer">
+                <span class="gen-quadra">
+                    <span class="fa-solid fa-close "></span>
+                </span>
+            </span>
+            <span class="gen-text">
+                <span id="gen-to-hide-on-mobile">Nos articles sont organisés en hashtags.</span><br> 
+                <span>Un <em class="gen-keyword"> #hashtag</em> est un mot clé.</span>
+            </span>
+            <form action="{% url 'post:search-by-hashtag' %}" method="GET" class="gen-search-form">
+                {% csrf_token %}
+                <input type="text" name="hashtag-search" placeholder="Cherchez un hashtag" id="gen-input-hashtag">
+                <button class="gen-submit" type="submit">
+                    Chercher
+                </button>
+            </form>
+        </div>
+    </section>
+
+
+    
+    {% include 'footer.html' %}
+
+    {% include 'modal.html' %}
+
+
+    <!-- FIXED ELEMENTS -->
+    
+    <!-- BACK TO TOP -->
+        {% include 'backToTop.html' %}
+    <!-- END BACK TO TOP -->
+    
+    {% include 'post/search_form.html' %}
+</body>
+</html>

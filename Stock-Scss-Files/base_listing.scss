@@ -1,0 +1,728 @@
+@font-face {
+    font-family: Title;
+    src: url('../../../../blog/static/fonts/SourceSerif4-Medium.ttf') format('TrueType'),
+         url('../../../../blog/static/fonts/SourceSerif4-Medium.woff') format('woff'),
+         url('../../../../blog/static/fonts/SourceSerif4-Regular.ttf') format('TrueType'),
+         url('../../../../blog/static/fonts/SourceSerif4-Regular.woff') format('woff'),
+         ;
+}
+
+@font-face {
+    font-family: Text;
+    src: url('../../../../blog/static/fonts/SourceSans3-Regular.ttf') format('TrueType'),
+         url('../../../../blog/static/fonts/SourceSans3-Regular.woff') format('woff'),
+}
+
+
+// LES VARIABLES
+$bgw : #F7FAFB;
+$bgb : #090A0C;
+$fg: black;
+$bgb_2:#333;
+$accent:#FDD017;
+$success:#00FF00;
+$title:Title;
+$text:Text;
+$font:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$radius:5px;
+$topbar_height:60px;
+$padding_box:10px 3rem;
+$sidebar:60vw; // Cette valeur a changé
+$sdb_show_duration:.4s;
+
+// LES MIXINS
+@mixin flex_row(
+    $alit:center,
+    $jusco:space-between,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: row;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin flex_column(
+    $alit:center,
+    $jusco:center,
+    $gap:0,
+    $flw:nowrap
+) {
+    display: flex;
+    flex-direction: column;
+    align-items: $alit;
+    justify-content: $jusco;
+    gap: $gap;
+    flex-wrap: $flw;
+}
+
+@mixin grid_col(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-columns: $div;
+    gap: $gap;
+}
+
+@mixin grid_row(
+    $div:auto,
+    $gap:0
+){
+    display: grid;
+    grid-template-rows: $div;
+    gap: $gap;
+}
+
+// STYLE GENERAL
+
+::-moz-selection {
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+::selection{
+    color: black;
+    background-color:rgba($color: $accent, $alpha: .5);
+}
+
+*{
+    box-sizing: border-box;margin:0;padding: 0;
+    border: none;outline: none;
+    text-decoration: none;list-style-type: none; font-family: $text,$font;
+}
+
+html{
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.bl-site-pusher{
+    transition: .4s ease-out;
+    position: sticky;
+}
+
+.gen-hashtags{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 0;
+    width: 100%;
+}
+.gen-hashtag{
+    display: inline-block;
+    padding: .1rem .3rem;
+    border-radius: 5px;
+    color: $accent;
+    background-color: $bgb;
+}
+
+img {
+    max-width:100%;
+    max-height: 100%;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.bl-big-title{
+    font-size: 7rem;
+    color: white;
+}
+
+.bl-under-big-title{
+    font-size: 2rem;
+    color: white;
+}
+
+.bl-big-head{
+    min-height: 100vh;
+    width: 100%;
+    background-color:$bgb;
+    @include flex_column;
+    position: relative;
+
+    .bl-topbar{
+        background-color:$bgb;
+        color: white;
+        @include flex_row;
+        padding: $padding_box;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: $topbar_height;
+        
+        .bl-site-name{
+            font-size: 2rem;
+        }
+
+        .bl-menu ul{
+            @include flex_row($gap:30px);
+
+            .bl-links,
+            .bl-icons{
+                @include flex_row($gap:30px);
+            }
+
+            .bl-icons {
+                justify-content: flex-end;
+                gap: 15px;
+            }
+
+            .bl-icon{
+                height: 40px;
+                width: 40px;
+                background-color: white;
+                border-radius: 50%;
+                @include flex_column;
+                font-size: 1.1rem;
+                color: black;
+                // margin-left: 20px;
+                cursor: pointer;
+
+                &:hover,
+                &:focus{
+                    background-color: $accent;
+                    color: black;
+                }
+            }
+
+            a{
+                color: white;
+                display: inline-block;
+                text-align: center;
+                padding-bottom: 3px;
+                border-bottom: .7px solid transparent;
+
+                &:hover{
+                    color:$accent;
+                    border-block-color: $accent;
+                }
+            }
+
+            .bl-add-link{
+                border: 1px solid white;
+                padding: 8px 30px;
+                border-radius: 25px;
+                color: white;
+                transition: .4s ease-out;
+
+                &:hover{
+                    background-color: $accent;
+                    color: $bgb;
+                    border-color: $accent
+                }
+            }
+
+            .bl-menu-icon{
+                display: none
+            }
+
+            .bl-search-icon{
+                transition: .4s ease-out;
+            }
+
+            .bl-search-icon-js{
+                opacity: 0;
+            }
+        }
+    }
+
+    .bl-centred{
+        @include flex_column;
+        padding-top: 30px;
+
+        // .bl-big-title{
+        //     animation: boom-boom 3s infinite;
+
+        // }
+
+        @keyframes
+        boom-boom {
+            0%{
+                transform:initial;
+            }
+            25%{
+                transform:translateX(20px);
+            }
+            50%{
+                transform:translateX(-10px);
+            }
+            75%{
+                transform:translateX(10px);
+            }
+            100%{
+                transform:initial;
+            }
+        }
+    
+
+        .bl-stats{
+            background-color: $bgb;
+            padding: 10px 20px;
+            @include flex_row($jusco:space-around,$gap:20px);
+            color: white;
+
+            .bl-num{
+                color: $accent;
+            }
+        }
+    }
+
+    .bl-arrow-down{
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: $accent;
+        color: $bgb;
+        font-size: 1.2rem;
+        position: absolute;
+        bottom: 80px;
+        left: 40px;
+        @include flex_column;
+        animation: down-down 3s infinite;
+    }
+
+    .bl-say-what-it-is{
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid $accent;
+        color: $accent;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        border-radius: 8px;
+    }
+
+    @keyframes down-down {
+        0%{
+            opacity: 0;
+        }
+
+        100%{
+            opacity: 1;
+            transform: translateY(40px);
+        }
+    }
+}
+
+.bl-content{
+    min-height: 100vh;
+    padding-top: 30px;
+    .bl-big-title{
+        width: 100%;
+        text-align: center;
+    }
+
+    .bl-cards{
+        padding: $padding_box;
+        @include grid_col($div:repeat(4,1fr),$gap:20px);
+        align-items: start;
+
+        .bl-card{
+            background-color: $bgb;
+            color: white;
+            border-radius: $radius;
+            overflow: hidden;
+            transition: .4s ease-out;
+
+            .bl-img{
+                position: relative;
+
+                .gen-copy-link{
+                    position: absolute;
+                    right: 1rem;
+                    top: 20px;
+                    background-color: $accent;
+                    color: black;
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 50%;
+                    @include flex_column;
+                    transition: .4s ease-out;
+                    cursor:copy;
+
+                    &:hover,
+                    &:active{
+                        background-color: darken($color: $accent, $amount: 10);
+                    }
+                }
+            }
+
+            .bl-card-content{
+                @include flex_column($alit:flex-start,$jusco:flex-start,$gap:10px);
+                padding: 20px;
+
+                h2{
+                    color: $accent;
+                    font-size: 1.5rem;
+                    word-wrap: break-word;
+                }
+
+                p{
+                    word-wrap: break-word;
+                }
+
+                .bl-date{
+                    color: $accent;
+                }
+
+                .bl-author{
+                    color: $accent;
+                }
+                
+                .bl-links{
+                    @include flex_row;
+                    width: 100%;
+                }
+
+                .bl-read{
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background-color: $accent;
+                    color: black;
+                    border-radius: 7px;
+                }
+
+                .bl-modify,
+                .bl-delete{
+                    @include flex_column;
+                    height: 45px;
+                    width: 45px;
+                    border-radius: 50%;
+                    background-color: $bgw;
+                    color: $bgb;
+                    font-size: 1.1rem;
+                    transition: .4s ease-in;
+                }
+
+                .bl-delete{
+                    color: red;
+                }
+                
+                .gen-online{
+                    color: $success;
+                    background-color: $bgb_2;
+                }
+
+                .gen-outline {
+                    color: red;
+                }
+                #bl-management-actions{
+                    @include flex_row($jusco:flex-end,$gap:15px);
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .bl-pagination{
+        background-color: inherit;
+        padding: $padding_box;
+        @include flex_column($alit:flex-end);
+        
+        ul{
+            @include flex_row($gap:20px);
+
+            a{
+                color: inherit;
+            }
+
+            li{
+                display: inline-block;
+                padding: 10px;
+                border-radius: $radius;
+                border: .7px solid black;
+                cursor: pointer;
+
+                &:hover,
+                &:focus {
+                    background-color: $bgb;
+                    color: $accent;
+                }
+
+                &.bl-current-pagination{
+                    background-color: $bgb;
+                    color: $accent;
+                }
+            }
+        }
+
+        .bl-pagonation-locate{
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-top: 5px;
+        }
+    }
+}
+
+.bl-search-form{
+    width: 100%;
+    min-height: 70px;
+    top: $topbar_height;left: 0;right:10px;
+    position: fixed;
+    z-index: 50;
+    @include flex_column($alit:stretch);
+    transform: translateY(-180%);
+    transition: .4s ease-out;
+
+
+    .bl-wrapper{
+        width: 80%;
+        margin: auto;
+        @include flex_row($jusco:flex-start);
+        box-shadow: 1px 1px 11px 1px black;
+        border-radius: $radius;
+        overflow: hidden;
+
+        input,button{
+            padding: 10px 20px;
+            font-family: $text,$font;
+            font-size: 1rem;
+            height: 50px;
+        }
+        input{
+            width: 100%;
+
+            &::-webkit-search-cancel-button{
+                display: none;
+            }
+        }
+        button{
+            background-color: $bgb;
+            color: $accent;
+        }
+    }
+}
+.bl-search-form-js{
+    transform: initial;
+}
+
+
+.da-title-clignote{
+    color: red;
+}
+
+
+.ask-before-deleting {
+    overflow: hidden;
+}
+
+.ask-before-deleting .gen-blurer-js{
+    display: flex;
+}
+
+.gen-blurer{
+    position: fixed;
+    z-index: 101;
+    left: 0;right: 0;top: 0;bottom: 0;
+    background-color: rgba(0,0,0,.8);
+    backdrop-filter: blur(4px);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    @include flex_column;
+    display: none;
+    padding: 20px;
+
+
+    .gen-modal-confirm{
+        border-radius: 10px;
+        background-color: $bgb;
+        color: white;
+        padding: 20px;
+        font-size: 1.1rem;
+        @include flex_column($alit:stretch,$jusco:flex-start,$gap:20px);
+        width: 400px;
+    
+        .gen-top{
+            @include flex_column($jusco:flex-start,$gap:10px,$alit:center);
+            
+            .gen-ask{
+                text-align: center;
+            }
+            
+            .gen-title{
+                text-align: center;
+                color: $accent;
+                @include flex_column($jusco:flex-start);
+            }
+        }
+    
+        .gen-btns{
+            width: 100%;
+            @include flex_row($jusco:space-around);
+        }
+    
+        .gen-btn{
+            padding: 10px 30px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+    
+            &.gen-yes{
+                background-color: $success;
+            }
+    
+            &.gen-no{
+                background-color: red;
+            }
+        }
+    }
+}
+
+.gen-back-to-top {
+    position: fixed;
+    z-index: 10000;
+    bottom: 20px;
+    right: 30px;
+    padding: 15px;
+    border-radius:50%;
+    background-color: $accent;
+    @include flex_column;
+    color: black;
+    opacity: 0;
+    transition: .4s;
+    transform: translateY(10px);
+}
+
+.gen-back-to-top-js {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+// MEDIA QUERIES
+
+@media only all and (max-width:1250px){
+    .bl-content .bl-cards{
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media only all and (max-width:1015px){
+    .bl-content .bl-cards{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media only all and (max-width:950px){
+
+    .bl-big-head .bl-topbar .bl-menu ul {
+
+        .bl-add-link{
+            border-radius: 0;
+        }
+    }
+         
+    .bl-big-title{
+        width: 80%;
+        margin: auto;
+    }
+
+    .bl-big-head .bl-topbar .bl-menu ul {
+
+        .bl-links{
+            position: fixed;
+            z-index: 98;
+            height: 100%;
+            right: 0;left: 0;
+            top: $topbar_height;
+            bottom: 0;
+            width: 100%;
+            background-color: $bgb;
+            @include flex_column($jusco:flex-start,$alit:stretch);
+            padding-top:60px;
+            transition: .4s ease-out;
+            transform: translateX(100%);
+
+            a{
+                display: inline-block;
+                padding: 20px;
+                width: 100%;
+                text-align: center;
+                border: none;
+                color: white;
+                &:hover{
+                    background-color: darken($color: $accent, $amount: 20);
+                }
+            }
+        }
+
+        .bl-menu-icon{
+            display: flex;
+        }
+    }
+
+     .body-js {
+        overflow: hidden;
+        .bl-site-pusher{
+            .bl-big-head .bl-topbar .bl-menu ul {
+                .bl-links{
+                    transform: initial;
+                }
+            }
+        }
+    }
+}
+
+@media only all and (max-width:720px){
+    .bl-content .bl-cards{
+        grid-template-columns: auto;
+    }
+
+}
+
+@media only all and (max-width:460px){
+    .bl-big-title{
+        font-size: 3rem !important;
+        text-align: center;
+        width: 100%;
+        padding: 0 20px;
+    }
+    .bl-big-head .bl-centred{
+        padding-top: 20px;
+    }
+
+    .bl-big-head .bl-topbar .bl-menu .bl-icons .bl-add-link{
+        display: none;
+    }
+
+    .gen-blurer .gen-modal-confirm{
+        width: 95%;
+        margin: auto;
+    }
+}
+
+@media only all and (max-width:360px){
+    
+    .bl-big-head {
+        position: relative;
+
+        .bl-topbar{
+            padding: 10px 20px;
+        }
+        .bl-centred{
+                .bl-stats {
+                    font-size: 1rem;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    padding: 5 20px;
+                }
+        }
+    }
+
+    .bl-content .bl-cards{
+        padding: 20px;
+    }
+}

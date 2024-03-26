@@ -1,0 +1,334 @@
+
+<section class="da-about-me" id="contacts">
+    <div class="da-present">
+        <p class="da-text">
+            Je suis <span class="da-text name">NZANZU MUHAYRWA L.</span>
+        <br> Développeur Web, rédacteur, romancier et parle couramment le swahili, le français, l'anglais et l'espagnol.
+        <br>
+        Contactez-<em class="da-emphasize">moi</em>  
+        </p>
+
+        <div class="da-contacts">
+            <a href="#">
+                <span class="fa-brands fa-facebook"></span>
+            </a>
+            <a href="#">
+                <span class="fa-brands fa-telegram"></span>
+            </a>
+            <a href="#">
+                <span class="fa-brands fa-whatsapp"></span>
+            </a>
+            <a href="mailto:nzanzu.lwanzo.work@gmail.com" alt="E-mail">
+                <span class="fa-solid fa-envelope"></span>
+            </a>
+        </div>
+    </div>
+    <div class="da-contact-form">
+        <form action="{% url 'management:contact-me' %}" method="POST" class="da-form-contact-to-me" id="da-form-contact-to-me">
+            {% csrf_token %}
+           
+            <div class="da-wrapper">
+                <div class="da-icon-input one">
+                    <span class="fa-solid fa-question da-icon for-subject"  id="subject"></span>
+                    <input type="text" name="subject" data-id="subject" placeholder="ex: Demande collaboration" autocomplete="off" maxlength="64" class="input-for-contact">
+                </div>
+
+                <div class="da-icon-input one">
+                    <span class="fa-solid fa-user da-icon for-sender" id="username"></span>
+                    <input type="text" name="sender" data-id="username" placeholder="ex: Tupac Shakur" autocomplete="off" maxlength="64" class="input-for-contact">
+                </div>
+            </div>
+            <div class="da-wrapper">
+                <div class="da-icon-input two">
+                    <span class="fa-solid fa-envelope da-icon for-email" id="usermail"></span>
+                    <input type="email" name="usermail" data-id="usermail" placeholder="ex: tupacshakur@gmail.com" class="input-for-contact">
+                </div>
+
+                <div class="da-icon-input two">
+                    <span class="fa-solid fa-phone da-icon for-phone" id="phoneTel"></span>
+                    <input type="tel" name="phoneTel" data-id="phoneTel" placeholder="ex: +243-xxx-xxx-xxx" maxlength="16" class="input-for-contact">
+                </div>
+            </div>
+
+            <textarea name="message" id="contact-me" cols="30" rows="10" placeholder="Ecrivez-moi un message directement ici..."></textarea>
+            <button type="submit" class="da-submit-btn da-submit-btn-contactMe">
+                <span>Envoyer</span>
+                <span class="fa-solid fa-paper-plane"></span>
+            </button>
+            <span class="required-message">**Tous les champs sont requis !</span>
+            <span class="required-message">**Respecter le modèle donné</span>
+        </form>
+    </div>
+</section>
+
+
+<style>
+    .required-message{
+        color: #FDD017;
+    }
+    .da-about-me {
+    padding: 10px 3rem;
+    background: -o-linear-gradient(330deg, #090A0C, #333);
+    background: linear-gradient(120deg, #090A0C, #333);
+    min-height: 400px;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 55% 20px 45%;
+    grid-template-columns: 55% 45%;
+    gap: 20px;
+    }
+    .da-about-me .da-present {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 10px;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+    .da-about-me .da-present .da-emphasize {
+    font-style: normal;
+    color: #FDD017;
+    }
+    .da-about-me .da-text {
+    color: white;
+    font-size: 1.5rem;
+    }
+    .da-about-me .da-text.name {
+    font-size: 2rem;
+    color: #FDD017;
+    }
+    .da-about-me .da-contacts {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 20px 1fr 20px 1fr 20px 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    border-radius: 5px;
+    }
+    .da-about-me .da-contacts a {
+    display: inline-block;
+    padding: 20px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: #FDD017;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
+    }
+    .da-about-me .da-contacts a:hover {
+    -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+            transform: scale(1.1);
+    }
+    .da-about-me .da-contacts span[class^=fa-] {
+    font-size: 1.5rem;
+    color: #090A0C;
+    }
+    .da-about-me .da-contact-form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    padding: 50px 0;
+    }
+    .da-form-contact-to-me{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-align: start;
+            -ms-flex-align: start;
+                align-items: flex-start;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+        gap: 5px;
+    }
+    .da-about-me .da-contact-form textarea {
+    width: 100%;
+    resize: none;
+    padding: 20px;
+    font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 1rem;
+    border-radius: 0;
+    height: 200px;
+    }
+    .da-about-me .da-contact-form .da-wrapper {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 50% 0 50%;
+    grid-template-columns: 50% 50%;
+    gap: 0;
+    width: 100%;
+    }
+    .da-about-me .da-contact-form .da-wrapper .da-icon-input {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 20% 0 80%;
+    grid-template-columns: 20% 80%;
+    gap: 0;
+    width: 100%;
+    position: relative;
+    }
+    .da-about-me .da-contact-form .da-wrapper .da-icon {
+    background-color: #FDD017;
+    color: #090A0C;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 0;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    -webkit-transition: .4s ease-out;
+    -o-transition: .4s ease-out;
+    transition: .4s ease-out;
+    }
+    .da-about-me .da-contact-form .da-wrapper .da-icon-success{
+        background-color: #00FF00;
+    }
+    .da-about-me .da-contact-form .da-wrapper .da-icon-fail{
+        background-color: red;
+    }
+    .da-about-me .da-contact-form .da-wrapper input {
+    height: 40px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    border-radius: 0;
+    }
+    .da-about-me .da-contact-form .da-submit-btn {
+    background-color: #FDD017;
+    padding: 10px 25px;
+    font-family: Text, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;    
+    cursor: pointer;
+    }
+
+    @media only all and (max-width: 1000px) {
+        .da-about-me .da-contact-form .da-wrapper {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-align: stretch;
+                -ms-flex-align: stretch;
+                    align-items: stretch;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            gap: 5px;
+            -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+        }
+    }
+
+    @media only all and (max-width: 615px){
+        .da-about-me {
+        -ms-grid-columns: auto;
+        grid-template-columns: auto;
+        }
+        .da-about-me .da-contact-form {
+        padding: 20px 0;
+        }
+    }
+
+
+    @media only all and (max-width: 425px){
+        .da-about-me {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            gap: 0;
+            -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+        }
+        .da-about-me .da-present {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            gap: 10px;
+            -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+        }
+        .da-about-me .da-present .da-text {
+            text-align: center;
+        }
+        .da-about-me .da-present .da-image {
+            display: none;
+        }
+    }
+</style>

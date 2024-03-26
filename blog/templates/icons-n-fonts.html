@@ -1,0 +1,20 @@
+{% load static %}
+
+{% include 'icons.html' %}
+ <!-- Custom fonts -->
+ <style>
+     @font-face {
+         font-family: Title;
+         src: url("{% static 'fonts/SourceSerif4-Medium.ttf' %}") format('TrueType'),
+             url("{% static 'fonts/SourceSerif4-Medium.woff' %}") format('woff'),
+             url("{% static 'fonts/SourceSerif4-Regular.ttf' %}") format('TrueType'),
+             url("{% static 'fonts/SourceSerif4-Regular.woff' %}") format('woff'),
+             ;
+     }
+
+     @font-face {
+         font-family: Text;
+         src: url("{% static 'fonts/SourceSans3-Regular.ttf' %}") format('TrueType'),
+             url("{% static 'fonts/SourceSans3-Regular.woff' %}") format('woff'),
+     }
+ </style>

@@ -1,0 +1,225 @@
+{% load static %}
+{% load custom-filters %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Form page for CRUD operations">
+        <meta name="keywords" content="administration panel, management,CRUD">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,shrink-to-fit=no">
+        <title>
+            {% block documentTitle %}
+                Rédiger un article
+            {% endblock %}
+        </title>
+
+
+        <!-- INCLUDE ICONS  -->
+        <!-- INCLUDE FONTS -->
+        {% include 'icons-n-fonts.html' %}
+        <!-- END INCLUDE ICONS  -->
+        <!-- END INCLUDE FONTS -->
+
+        <!-- FOR THE RICHTEXT EDITOR -->
+        {{ form.media }}
+        <!-- END FOR THE RICHTEXT EDITOR -->
+        
+        <!-- Custom stylesheet -->
+        <link rel="stylesheet" href="{% static 'administration/css/create-article.css' %}">
+        <!-- Custom importmap -->
+        {% include 'importMapJs.html' %}
+        <!-- Custom js files -->
+        <script src="{% static 'administration/js/create-article.js' %}" type="module" defer></script>
+    </head>
+
+    <body>
+
+        <form action="{% url 'post:search-article' %}" method="GET" target="_blank" class="car-search-form">
+            <div class="car-wrap-search">
+                <input type="search" name="search-input" placeholder="Recherchez un article ici si vous voulez en copier lien ">
+                <button type="submit">
+                    <span class="fa-solid fa-search"></span>
+                </button>
+            </div>
+
+            <span class="fa-solid fa-close car-hide-search-form"></span>
+        </form>
+       
+        <form action="{% url 'site-admin:create-article' %}" method="POST" id="create-article-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="car-topbar">
+                <h1>Rédiger un article</h1>
+
+                <ul class="car-links">
+                    
+                    <a href="{{ panel }}" class="car-round-btn">
+                        <li>
+                            Panel
+                        </li>
+                    </a>
+                    
+                    <span class="car-circle-btn" id="car-display-search-form">
+                        <li>
+                            <span class="fa-solid fa-search"></span>
+                        </li>
+                    </span>
+
+                    <a href="{% url 'extra:homepage' %}"
+                     class="car-circle-btn">
+                        <li>
+                            <span class="fa-solid fa-home"></span>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+
+            <div class="car-form-top">
+                <h2 id="car-section-title">Meta Informations sur l'Article</h2>
+
+                <div class="car-fields">
+                    <div class="car-left">
+                        <input type="text" maxlength="78" name="title" id="title-input" placeholder="Le Titre de l'article" class="car-input">
+                        <textarea name="sumItUp" id="sumItUp-input" maxlength="320" placeholder="Une courte introduction à l'article. C'est un texte qui doit contenir les mots clés de l'articles. " class="car-input"></textarea>
+
+                        <div class="car-select">
+                            <label for="category-select">(Cliquez ici pour choisir la catégorie de l'article)</label>
+                            <select name="category" class="category-select">
+                                {% for category in allCategories %}
+                                    <option value="{{ category.id }}"> {{ category.title}} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="car-select" id="car-hashtags-selector">
+                            <label for="category-select">(Choisir au maximum 3 hashtags. Maintenez la touche ctrl maintenue pour la multiselection en cliquant sur les hashtags que vous choisissez - pour Windows)</label>
+                            <select name="hashtags" class="category-select" id="hashtags-options-list" multiple >
+                               {% for hashtag in allHashtags %}
+                                    <option value="{{ hashtag.id }}" class="car-hashtag">{{hashtag.hashtag}}</option>
+                               {% endfor %}
+                            </select>
+                            <div class="car-underselect">                                
+                                <button type="button" class="car-add-btn"  data-linkToAddHastag="{% url 'site-admin:create-hashtag' %}">
+                                    <span class="fa-solid fa-plus"></span>
+                                </button>
+                                <div class="car-add-hashtag">
+                                    <input type="text" id="car-filter-hashtags" name="new_hashtag" placeholder="Chercher un hashtag" maxlength="16">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="car-right">
+                        <div class="car-main-img">
+                            <!-- <button type="button" id="image-btn">
+                                <span class="car-text">Choisissez l'image principale de l'article</span>
+                                <span class="fa-solid fa-image car-icon"></span>
+                            </button> -->
+
+                            <button type="button" id="display-all-images">
+                                <span class="car-text">Choisissez l'image principale de l'article</span>
+                                <span class="fa-solid fa-image car-icon"></span>
+                            </button>
+                            
+
+                            <img src="#" alt="Image choisie pour l'article en cours de rédaction" class="car-preview-img">
+
+                            <div class="car-chosen-hashtags">
+                                <!-- <span class="car-hashtag">
+                                    #JohnDoe
+                                </span>
+                                <span class="car-hashtag">
+                                    #JohnDoe
+                                </span>
+                                <span class="car-hashtag">
+                                    #JohnDoe
+                                </span> -->
+                            </div>
+                        </div>
+                        <input type="text" name="imageAlt" id="imageAlt-id" placeholder="Décrivez l'image que vous venez de choisir pour l'article" class="car-input" maxlength="100">
+                        <input type="text" name="imageAuthor" placeholder="Donnez l'auteur et la source de l'image" class="car-input" maxlength="64">
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="car-form-richText">
+                {{ form }}       
+            </div>
+
+            <div class="car-form-btn">
+                <div id="put-draft">
+                    <input type="checkbox" name="keep-draft" id="keep-draft">
+                    <label for="keep-draft">Brouillon</label>
+                </div>
+                <button type="submit" id="submit-btn">Publier</button>
+            </div>
+        </form>
+
+        
+        <a href="#" class="gen-back-to-top">
+            <span class="fa-solid fa-angle-up"></span>
+        </a>
+        
+        {% include 'modal.html' %}
+
+        <!-- FIXED ELEMENTS -->
+        <div class="dash-all-images">
+            <div class="dash-images-container">
+                <div class="dash-top">
+                    <h2>Prévisualiser l'image</h2>
+
+                    <div class="dash-btns">
+                        <button type="button" id="image-btn">
+                            <span class="car-text">Choisir</span>
+                            <span class="fa-solid fa-image car-icon"></span>
+                        </button>
+                        <button type="button" class="validate-img">
+                            <span class="car-text">Validation</span>
+                            <span class="fa-solid fa-image car-icon"></span>
+                        </button>
+                        <span class="fa-solid fa-close dash-close-image-picker"></span>
+                    </div>
+                </div>                
+                <div class="dash-wrap">
+                    <div class="dash-image">
+                        <img src="" alt="Preview article main image" class="dash-preview-img">
+                        <p>
+                            Aucune Image
+                        </p>
+                    </div>
+
+                    <div class="dash-validation">
+                        <table>
+                            <caption>Caractéristiques</caption>
+
+                            <tr>
+                                <th>Hauteur</th>
+                                <td id="dash-height">Aucune</td>
+                            </tr>
+                            <tr>
+                                <th>Largeur</th>
+                                <td id="dash-width">Aucune</td>
+                            </tr>
+                            <tr>
+                                <th>Poids</th>
+                                <td id="dash-size">Aucune</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td id="dash-name">Aucune</td>
+                            </tr>
+                        </table>
+                        
+                        <div class="dash-note">
+                           
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
